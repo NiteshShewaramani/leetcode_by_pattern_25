@@ -1,0 +1,40 @@
+class Solution {
+    List<List<Integer>> ans = new ArrayList();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        recursion(candidates,target,0,new ArrayList());
+        return ans;
+        
+    }
+
+    public void recursion(int[] candidates, int target,int index,List<Integer> currentSum)
+    {
+        if(target<0)
+        return;
+
+        if(target==0)
+        {
+            ans.add(new ArrayList(currentSum));
+            return;
+        }
+        if(index>= candidates.length)
+        return;
+
+
+        currentSum.add(candidates[index]);
+        target = target - candidates[index];
+
+        recursion(candidates,target,index,currentSum);
+
+        currentSum.remove(currentSum.size()-1);
+        target = target + candidates[index];
+        //not pick
+        recursion(candidates,target,index+1,currentSum);
+    }
+}
+
+TIME = O( 2 ^ t  x  k ) 
+->  k is the time taken to put the values in the arraylist as final ans 
+->  t is the target value bcaz we are doing pick / not pick until we reach the target
+
+SPACE = O (j x  no of combination ) 
+-> j is the depth of recursion here

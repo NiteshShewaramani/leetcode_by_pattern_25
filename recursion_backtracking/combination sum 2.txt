@@ -1,0 +1,43 @@
+class Solution {
+    List<List<Integer>> ans = new ArrayList();
+    
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        recursion(candidates,target,0,new ArrayList());
+        return ans;
+    }
+
+    public void recursion(int[] candidates, int target,
+    int index,List<Integer> current)
+    {
+            if(target == 0)
+            {
+                ans.add(new ArrayList<>(current));
+                return;
+            }
+            
+        
+        for(int i=index;i<candidates.length;i++)
+        {
+            //eliminate duplicates
+            if(i > index && candidates[i] == candidates[i-1])
+            continue;
+
+            if(candidates[i]>target)
+                break;
+
+            current.add(candidates[i]);
+
+            recursion(candidates,target-candidates[i],i+1,current);
+            current.remove(current.size()-1);
+
+        }
+    }
+}
+
+TIME = O( 2 ^ n  x  k ) 
+->  k is the time taken to put the values in the arraylist as final ans 
+->  n is the no of unique candidates 
+2 ^ n is the time taken to generate all subsequences 
+SPACE = O (j x  no of combination ) 
+-> j is the depth of recursion here

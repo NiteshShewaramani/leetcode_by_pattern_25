@@ -1,0 +1,25 @@
+class Solution {
+    //TC O(n)
+    //Space O(255) - visited Array
+    public int lengthOfLongestSubstring(String s) {
+        //s consists of English letters, digits, symbols and spaces.
+        int visitedArray[] = new int[255];
+        Arrays.fill(visitedArray,-1);
+        int windowSize = 0 , r = 0 , l = 0 , n = s.length();
+
+        
+        while(r < n)
+        {
+            char currentChar = s.charAt(r);
+            //window shrinking only when element is repeated in current window
+            if(visitedArray[currentChar]!=-1 && visitedArray[currentChar]>=l)
+            {
+                l = visitedArray[currentChar] + 1;
+            }
+            visitedArray[currentChar] = r;
+            windowSize = Math.max(windowSize , r - l + 1);
+            r++;
+        }
+        return windowSize;
+    }
+}

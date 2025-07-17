@@ -1,0 +1,53 @@
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        
+        int r = 0 , l = 0 , n = nums.length , zCount = 0 , size = 0;
+
+        while(r<n)
+        {
+            if(nums[r]==0)
+            ++zCount;
+		//this loop will only run from l to n once not every time bcaz we are 
+//shrinking the window once the window has shrunk it can't be shunken again
+            while(zCount>k)
+            {
+                if(nums[l]==0)
+                --zCount;
+                ++l;
+            }
+            size = Math.max(size,r-l+1);
+            ++r;
+        }
+        return size;
+    }
+    //TC - O(N) + O(N) 
+    //spcae - O(1)
+}
+
+// more optimized solution
+
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        
+        int r = 0 , l = 0 , n = nums.length , zCount = 0 , size = 0;
+
+        while(r<n)
+        {
+            if(nums[r]==0)
+            ++zCount;
+//keep incrementing the left and shrink the window will make sure that we don't exceed the size 
+//since we want the size not the actual elements this will work fine 
+            if(zCount>k)
+            {
+                if(nums[l]==0)
+                --zCount;
+                ++l;
+            }
+            size = Math.max(size,r-l+1);
+            ++r;
+        }
+        return size;
+    }
+    //TC - O(N) 
+    //spcae - O(1)
+}

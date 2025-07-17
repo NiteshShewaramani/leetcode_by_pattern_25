@@ -1,0 +1,45 @@
+class Solution {
+    //TC O(n)
+    //Space O(1)
+    public int totalFruit(int[] fruits) {
+        int start = 0,end = 0, size = 0 , basket1 = -1 , basket2 = -1,index1=0,index2=0;
+
+        while(end < fruits.length)
+        {
+          if(basket1 == -1 || basket1 == fruits[end])
+          {
+            basket1 = fruits[end];
+            index1 = end;
+          }
+          else if(basket2 == -1 || basket2 == fruits[end])
+          {
+            if(fruits[end] != basket1)
+            {
+               basket2 = fruits[end];
+               index2 = end;
+            }
+          }
+          else
+          {
+            //got third kind of unique fruit so we need to shrink the window
+            if(index1<index2)
+            {
+              start = index1+1;
+              basket1 = fruits[end];
+              index1 = end;
+            }
+            else
+            {
+              start = index2+1;
+              basket2 = fruits[end];
+              index2 = end;
+            }
+
+          }
+          size =  Math.max(size,end-start+1);
+          end++;
+        }
+        return size;
+        
+    }
+}

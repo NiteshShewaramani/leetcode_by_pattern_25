@@ -1,0 +1,46 @@
+class Solution {
+    /**
+    Time Complexity:The time complexity is O(n), where n is the length of the string s, 
+    due to the single while loop and the for loop inside runs atmost 255 times which is constant.
+    Space Complexity:The space complexity is O(1), as the visited array has a fixed size of 255, 
+    irrespective of the input string size.
+    **/
+    public int kDistinctChar(String s, int k) {
+        int lastSeen[] = new int[255];
+        int end = 0 , start = 0 , maxWindowSize = 0 , unique = 0 ;
+        Arrays.fill(lastSeen,-1);
+        while(end < s.length())
+        {
+            int currentChar = s.charAt(end);
+            if(lastSeen[currentChar] == -1)
+            ++unique;
+
+            //'If the number of unique characters exceeds k, shrink the window from the left 
+            if(unique>k)
+            {
+                int min=s.length();
+                int indexofCharToRemove = 0;
+                //check all the visited and get the minimum index value of unique element
+                for(int i=0;i<255;i++)
+                {
+                    if(lastSeen[i]!=-1)
+                    {
+                        if(lastSeen[i] < min)
+                        {
+                            min = lastSeen[i];
+                            indexofCharToRemove = i;
+                        }
+                    }
+                }
+                start = min+1;
+                //mark it unvisited as we have removed 1 unique value
+                lastSeen[indexofCharToRemove] = -1;
+                --unique;
+            }
+            lastSeen[currentChar] = end;
+            maxWindowSize = Math.max(maxWindowSize,end - start +1);
+            end++;
+        }
+        return maxWindowSize;
+    }
+}

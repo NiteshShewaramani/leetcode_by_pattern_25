@@ -1,0 +1,40 @@
+class Solution {
+    /*
+    TC - O(n)
+    SC - O(26) which is constant
+    */
+    public int characterReplacement(String s, int k) {
+        int maxWindowSize = 0 , uniqueCount = 0 ,max = 0;
+        int arr[] = new int[26];
+
+        int right = 0,left = 0;
+
+        while(right < s.length())
+        {
+            int currentChar = s.charAt(right) - 65;
+            
+            arr[currentChar]++;
+
+            max = Math.max(max,arr[currentChar]);
+            int currentWindow = right-left + 1;
+
+            // We are allowed to have at most k replacements in the window...
+            // So, if max character frequency + distance between left and right is greater than k...
+            // this means we have considered changing more than k charactres. So time to shrink window...
+            // Then there are more characters in the window than we can replace, and we need to shrink the window...
+            // keep shrinking the window 1 at a timewill keep the maxwindow size constant 
+            // we don't have to return the substring so while loop is not required
+            if((currentWindow - max) >k)
+            {
+                currentChar = s.charAt(left) - 65;
+                arr[currentChar]--;
+                left++;
+            }
+            // Get the maximum length of repeating character
+            maxWindowSize = Math.max(right-left + 1,maxWindowSize);
+            right++;
+        }
+        return maxWindowSize;
+        
+    }
+}

@@ -1,0 +1,44 @@
+class Solution {
+    /**
+    TC - O(2n+2n) = O(n)
+    SC - O(1) 
+     */
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        /**
+        pattern no 3 striver 
+        3) no of subarray where condition 
+This asks for a count to be returned we use pattern 2 here 
+
+For example Q is -> no of subarray where sum = k  
+
+The solution is 
+count  = (number of subarray where sum <=k) - (number of subarray where sum <=k-1)
+        
+         */
+        return noOfSubarrays(nums,goal) - noOfSubarrays(nums,goal-1);
+        
+    }
+
+    //TC - O(2N)
+    private int noOfSubarrays(int[] nums, int goal)
+    {
+        if(goal < 0) 
+        return 0;
+
+        int right = 0 , left = 0 , sum = 0 , count = 0;
+
+        while(right<nums.length)
+        {
+            sum = sum + nums[right];
+            while(sum>goal)
+            {
+                sum = sum - nums[left];
+                left++;
+            }
+            count = count + (right - left +1);
+            right++;
+        }
+        return count;
+
+    }
+}

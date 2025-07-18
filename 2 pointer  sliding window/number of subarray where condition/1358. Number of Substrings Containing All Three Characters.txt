@@ -1,0 +1,27 @@
+class Solution {
+    /**
+    TC - O(n)
+    SC - O(1)
+    aaacb
+    our window is completed when we get all the 3 elements , what ever comes before the window
+    means the last index of a in this case + 1(for current window) is the answer
+
+     */
+    public int numberOfSubstrings(String s) {
+        int ans=0;
+        int lastSeen[] = new int[3];
+        Arrays.fill(lastSeen,-1);
+
+        for(int i=0;i<s.length();i++)
+        {
+            int currentValue  = s.charAt(i) - 97;
+            lastSeen[currentValue] = i;
+
+            if(lastSeen[0] != -1 && lastSeen[1]!=-1 && lastSeen[2]!=-1)
+            {
+                ans = ans + Math.min(lastSeen[0], Math.min(lastSeen[1],lastSeen[2])) + 1;
+            }
+        }
+        return ans;
+    }
+}

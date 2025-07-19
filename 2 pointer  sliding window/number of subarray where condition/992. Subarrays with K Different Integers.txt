@@ -1,0 +1,39 @@
+class Solution {
+    //Tc - O(4 N) ~ O(N) SPACE - O(N)
+    public int subarraysWithKDistinct(int[] nums, int k) {
+        //TC - O(2 *N ) +  O(2 * N)
+        return noOfSubarrays(nums,k) - noOfSubarrays(nums,k-1);
+    }
+    //TC - O(2 *N )
+    public int noOfSubarrays(int[] nums, int k)
+    {
+        if(k<0)
+        return 0;
+
+        int count = 0 , right = 0 , left = 0 , uniqueCount  = 0;
+        //1 <= nums[i], k <= nums.length input constraint
+        int visited[] = new int[nums.length+1];
+        while(right<nums.length)
+        {
+            int currentElement = nums[right];
+            if(visited[currentElement]==0)
+            {
+                ++uniqueCount;
+            }
+            visited[currentElement]++;
+            while(uniqueCount > k )
+            {
+                currentElement = nums[left];
+                visited[currentElement]--;
+                if(visited[currentElement]==0)
+                {
+                    --uniqueCount;
+                }
+                left++;
+            }
+            count = count + (right-left) +1;
+            right++;
+        }
+        return count;
+    }
+}

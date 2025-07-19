@@ -1,0 +1,34 @@
+class Solution {
+    /**
+    Striver solution O(2*2N)  = O(n) time space is O(1)
+     */
+    public int numberOfSubarrays(int[] nums, int k) {
+        return numberOfNiceSubarrays(nums,k) - numberOfNiceSubarrays(nums,k-1);
+        
+    }
+    //TC - O(2 * N )
+    public int numberOfNiceSubarrays(int[] nums, int k)
+    {
+        if(k<0)
+        return 0;
+
+        int count = 0, right = 0 , left = 0 , noOfOdd = 0;
+
+        while(right<nums.length)
+        {
+            if(nums[right]%2==1)
+            ++noOfOdd;
+
+            while(noOfOdd>k)
+            {
+                if(nums[left]%2==1)
+                --noOfOdd;
+                left++;
+            }
+            count = count + (right-left) + 1; 
+            right++;
+        }
+        return count;
+
+    }
+}

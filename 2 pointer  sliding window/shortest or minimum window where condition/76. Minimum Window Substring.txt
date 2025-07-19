@@ -1,0 +1,44 @@
+class Solution {
+    //Total tc - O(2N) ~ O(N) Space = O(256) ~ O(1)
+    public String minWindow(String s, String t) {
+        int right = 0 , left = 0 , sIndex = -1 , minLength = Integer.MAX_VALUE , count  = 0;
+        int hash[] = new int[256];
+        //TC - O(m)
+        for(int i=0;i<t.length();i++)
+        {
+            int current = t.charAt(i);
+            hash[current]++;
+        }
+        //TC O(n) + O(n)
+        while(right<s.length())
+        {
+            int current = s.charAt(right);
+            if(hash[current]>0)
+            count++;
+
+            hash[current]--;
+            //invalid shrink window
+            while(count == t.length())
+            {
+                if(minLength>(right-left)+1)
+                {
+                    minLength = right - left +1;
+                    sIndex = left;
+                }
+                current = s.charAt(left);
+                hash[current]++;
+                
+                if(hash[current]>0)
+                count--;
+                left++;
+            }
+            
+            right++;
+        }
+
+        if(sIndex == -1)
+        return "";
+
+        return s.substring(sIndex,sIndex + minLength);
+    }
+}

@@ -1,0 +1,29 @@
+class Solution {
+    //TC - O(n + n)  = O(2n) ~ O(n)
+    //SC - O(26) ~ O(1)
+    public List<Integer> partitionLabels(String s) {
+        int hash[] = new int[26];
+
+        for(int i=0 ; i<s.length(); i++)
+        {
+            int index = s.charAt(i) - 97;
+            hash[index]  = i;
+        }
+        List<Integer> ans = new ArrayList();
+        int R=0 ,L = 0;
+        for(int i=0 ; i<s.length(); i++)
+        {
+            int index = s.charAt(i) - 97;
+            R = Math.max(R, hash[index]);
+            if(i == R)
+            {
+                //current element is the maximum partition we can do
+                ans.add(R - L + 1);
+                R++;
+                L = R;
+            }
+        }
+        return ans;
+
+    }
+}

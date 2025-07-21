@@ -1,0 +1,32 @@
+class Solution {
+    //SC - O(1)
+    //TC - O(n)
+    public int minimumLength(String s) {
+        int left=0,right=s.length()-1;
+
+        while(left<right)
+        {
+            char ch1=s.charAt(left),ch2=s.charAt(right);
+            if(ch1 == ch2)
+            {
+                while(left+1<right && ch1 == s.charAt(left+1))
+                {
+                    ++left;
+                }
+                ++left;
+                while(right-1>left && ch2 == s.charAt(right-1))
+                {
+                    --right;
+                }
+                --right;
+            }
+            else
+            {
+                break;
+            }
+            
+        }
+        return right-left +1;
+        
+    }
+}

@@ -1,0 +1,36 @@
+/**
+Sort the given array in non-decreasing order.
+Initialize two pointers left and right to the first and last indices of the array respectively.
+Initialize a variable count to 0.
+Iterate the loop until left is less than or equal to right.
+If the sum of elements at indices left and right is greater than the given target, decrement the right pointer.
+Otherwise, the subsequence formed by elements at indices left and right and all the possible subsequences formed by the elements between them (i.e., from left+1 to right-1) will satisfy the given sum condition.
+The number of possible subsequences that can be formed by the elements between left and right is equal to 2^(right-left).
+Increment count by the number of possible subsequences and increment left pointer.
+After the loop, return the value of count-1 modulo 10^9 + 7.
+ */
+class Solution {
+//TC - O(n) + O(n) = O(2n) ~ O(n)
+//SC - O(n)
+    public int numSubseq(int[] nums, int target) {
+        Arrays.sort(nums);
+        int res = 0, n = nums.length, left = 0, right = n - 1, mod = 1_000_000_007;
+        int[] pows = new int[n];
+        pows[0] = 1;
+        //precomputing an array of power of 2's 
+        //example is n = 4
+        //power array will be [1,2,4,8]
+        for (int i = 1 ; i < n ; ++i)
+            pows[i] = (pows[i - 1] * 2) % mod;
+            
+        while (left <= right) {
+            if (nums[left] + nums[right] > target) {
+                right--;
+            } else {
+                res = (res + pows[right - left]) % mod;
+                left++;
+            }
+        }
+        return res;
+    }
+}

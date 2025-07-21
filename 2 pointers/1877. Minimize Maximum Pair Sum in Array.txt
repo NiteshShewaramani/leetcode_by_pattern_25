@@ -1,0 +1,20 @@
+class Solution {
+    //TC O(nlogn + n)
+    //SC O(1)
+    public int minPairSum(int[] nums) {
+        int left=0,right=nums.length-1;
+        //TC (nlogn)
+        Arrays.sort(nums);
+        int max=0;
+        //dual pointer we need to minimize the sum
+        while(left<right)
+        {
+            int current=nums[left]+nums[right];
+            max=current > max ? current : max;
+            ++left;
+            --right;
+        }
+        return max;
+        
+    }
+}

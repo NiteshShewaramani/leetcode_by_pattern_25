@@ -1,0 +1,30 @@
+class Solution {
+    // TC - O(nlogn + n)
+    // Sc - O(1)
+    public int numRescueBoats(int[] people, int limit) {
+        int left  = 0 , right = people.length -1 , noOfBoats = 0;
+
+        Arrays.sort(people);
+
+        while(left <= right)
+        {
+            //put right person in a seperate boat
+            if(people[left] + people[right] > limit)
+            {
+                noOfBoats++;
+                right--;
+            }
+            else
+            {
+                //pair left and right people
+                noOfBoats++;
+                left++;
+                right--;
+            }
+            
+        }
+
+        return noOfBoats;
+        
+    }
+}

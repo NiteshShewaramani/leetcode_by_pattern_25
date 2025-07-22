@@ -1,0 +1,40 @@
+class Solution {
+    int[] nums;
+    public int splitArray(int[] nums, int m) {
+        this.nums = nums;
+        int low = 0, high = 0, min = Integer.MAX_VALUE;
+        for(int i=0;i<nums.length;i++){
+            low = Math.max(low, nums[i]);
+            high += nums[i];
+        }
+//Arrays.stream(nums).sum()
+//Arrays.stream(nums).max().orElse(0)
+        while(low <= high) {
+            int mid = low+(high-low)/2;
+            //System.out.println("mid is " + mid);
+            if(required_no_of_chunks(mid, m)){
+                
+               min = Math.min(min, mid);
+               //System.out.println("ans is " + min);
+               high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return min;
+    }
+    /**
+    We are taking a number mid and trying to split array
+    into chunks using that no this will give us an idea about where to find
+    the value
+     */
+    private boolean required_no_of_chunks(int mid, int m){
+        int chunks = 0, i=0;
+        while(i < nums.length){
+            int val = 0;
+            while(i < nums.length && nums[i] + val <= mid) 
+            val += nums[i++];
+            chunks++;
+        }
+        return chunks <= m;
+    }
+}

@@ -1,0 +1,41 @@
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        
+/*
+Similarly, if we take any element at an odd index, the previous element should be the same. 
+Therefore, we can use binary search to compare the middle element with its adjacent elements 
+to determine which side of the array the single element is on.
+
+If the middle element is at an even index, then the single element must be on the right side of the array, 
+since all the elements on the left side should come in pairs. 
+Similarly, if the middle element is at an odd index, then the single element must be on the left side of the array.
+We can continue this process by dividing the search range in half each time, until we find the single element.
+*/        
+        //take example as this [3,3,7,7,10,11,11]
+        //left =0 ,right = 6
+        //mid = 3
+        //doing binary search here 
+        //TC - (log n)
+        //SC - O(1)
+        if(nums.length==1) return nums[0];
+        int low = 0;
+        int high = nums.length-1;
+        
+        if (nums[0]!= nums[1]) return nums[0];
+ 
+        if (nums[high]!= nums[high- 1]) return nums[high];
+        
+        while (low <= high) {
+        int mid = (low + high) / 2;
+        if (nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1])
+                return nums[mid];
+        else if ((nums[mid] == nums[mid + 1] && mid % 2 == 0) || 
+        (nums[mid] == nums[mid - 1] && mid % 2 != 0))
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+    
+        return nums[low];
+    }
+}

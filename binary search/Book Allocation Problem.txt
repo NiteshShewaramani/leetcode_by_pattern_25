@@ -1,0 +1,60 @@
+class Solution {
+    public int findPages(int[] nums, int m) {
+        int left = 0 , right = 0;
+
+        if(m>nums.length)
+        return -1;
+
+        for(int i=0;i<nums.length;i++)
+        {
+            right = right + nums[i];
+            left = Math.max(left,nums[i]);
+        }
+    /**
+
+        //maximum value in the  array nums will be our left bound bcaz thats the minumum pages no assigned to a single student
+        //sum of array will be our right bound 
+        */
+        int ans = 0;
+
+        while(left<=right)
+        {
+            int mid = (left + right)/2;
+            int noOfStudentsAssigned =  getNoOfStudents(nums,mid);
+            if(noOfStudentsAssigned > m)
+            {
+                
+                left = mid+1;
+            }
+            else
+            {
+                ans = mid;
+                right = mid-1;
+            }
+        }
+        //System.out.println(ans);
+        return ans;
+   
+    }
+
+    private int getNoOfStudents(int[] nums , int pages)
+    {
+        int sum = 0 , count = 1;
+
+        for(int i=0;i<nums.length;i++)
+        {
+            if(sum + nums[i]<=pages)
+            {
+                sum = sum + nums[i];
+            }
+            else{
+                // Add pages to next student
+                ++count;
+                sum = nums[i];
+            }
+        }
+        return count;
+
+    }
+
+}

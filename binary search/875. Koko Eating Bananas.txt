@@ -1,0 +1,38 @@
+class Solution {
+    //TC - O(n + nlogn) - O(n) to find maximun value - logn for binary search  * n for searching till n 
+    //SC - O(1)
+    public int minEatingSpeed(int[] piles, int h) {
+        int low=1;
+        int high=Integer.MIN_VALUE;
+        for(int p:piles){
+            high = Math.max(high,p);
+        }
+        //doing binary search on answer
+        int mid=0;
+        while(low<high)
+        {
+            mid = (low+high)/2;
+            if(check(piles,h,mid)<=h)
+            {
+               high=mid;
+            }
+            else
+            low = mid+1;
+
+        }
+        return low;
+    }
+
+    private int check(int[] piles,int h,int mid){
+        int tHours=0;
+        for(int p:piles){
+            int time = p/mid;
+            tHours = tHours + time;
+            if(p%mid !=0)
+            ++tHours;            
+        }
+        return tHours;
+
+    }
+
+}

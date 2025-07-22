@@ -1,0 +1,32 @@
+class Solution {
+    //SC - O(1)
+    public int shipWithinDays(int[] weights, int days) {
+        //r is sum of all weights
+        //l is maximum weigh 
+        int l = 0, r = 0;
+        //TC O(n)
+        for(int w : weights) {
+            l = Math.max(l, w);
+            r += w;
+        }
+        //TC (n * log(sum of weights))
+        while(l < r) {
+           
+            int mid = (l + r) / 2, cur = 0, need = 1;
+            //System.out.println("loop " + " l = " + l +" r = " + r + " mid ="+ mid);
+            for(int w : weights) {
+                if(cur + w > mid) {
+                    need++;
+                    cur = 0;
+                }
+                cur += w;
+            }
+            
+            if(need <= days) 
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+}

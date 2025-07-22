@@ -1,0 +1,47 @@
+class Solution {
+    public int aggressiveCows(int[] nums, int k) {
+        Arrays.sort(nums);
+        int l = 1;
+        int r = nums[nums.length-1] - nums[0];
+        int ans = -1;
+        //TC -  O  (n * log(max - min value in array) + nlogn(for sorting) ) 
+        //SC - O(1)
+        while(l<=r)
+        {
+            int mid = (l+r)/2;
+            if(check(nums,k,mid))
+            {
+                ans = Math.max(mid,ans);
+                //increase the number if possible
+                l=mid+1;
+            }
+            else
+            {
+                //else reduce it
+                r=mid-1;
+            }
+        }
+        return ans;
+   
+    }
+
+    private boolean check(int[] nums, int k , int distance)
+    {
+        int prevDistance = nums[0];
+        int cowsPlaced = 1;
+        for(int i=1;i<nums.length;i++)
+        {
+            int current = nums[i] - prevDistance;
+            if(current >= distance)
+            {
+                ++cowsPlaced;
+                prevDistance = nums[i];
+            }
+        }
+        //means all cows placed
+        if(cowsPlaced >= k)
+        return true;
+        else
+        return false;
+    }
+}

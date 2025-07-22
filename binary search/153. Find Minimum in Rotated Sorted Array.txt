@@ -1,0 +1,30 @@
+class Solution {
+    /**
+    The minimum element must satisfy one of two conditions: 1) If rotate, A[min] < A[min - 1]; 2) 
+    If not, A[0]. Therefore, we can use binary search: check the middle element, if it is less than previous one, then it is minimum. 
+    If not, there are 2 conditions as well: If it is greater than both left and right element, then minimum element should be on its right, otherwise on its left.
+
+    TC - O(log n)
+    SC - O(1)
+     */
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length-1;
+        
+        while(left < right){
+            int mid = (left + right) / 2;
+            
+            if(mid != 0 && nums[mid - 1] > nums[mid]){
+                return nums[mid];
+            }
+            
+            if(nums[mid] > nums[right]){
+                left = mid + 1;
+            }else if(nums[mid] < nums[right]){
+                right = mid - 1;
+            }
+        }
+        
+        return nums[left];
+    }
+}

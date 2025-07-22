@@ -1,0 +1,55 @@
+class Solution {
+    //TC - O(log n) + O(log  n)
+    //SC - O(1) 
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length < 1)
+        {
+            return new int[]{-1,-1};
+        }
+        int value = binarySearch(target,nums);
+        int value2 = binarySearchLast(target,nums);
+
+        return new int[]{value,value2};  
+    }
+
+    private int binarySearch(int target,int nums[])
+    {
+        int idx=-1;
+        int low=0;
+        int high=nums.length-1;
+        while(low<=high)
+        {
+            int mid = (low+high)/2;
+            if(target<=nums[mid])
+            {
+                high=mid-1;
+            }
+            else
+            low=mid+1;
+
+            if(nums[mid]==target)
+            idx=mid;
+        }
+        //not found
+        return idx;
+    }
+
+    private int binarySearchLast(int target,int nums[]){
+        int idx=-1,low=0,high=nums.length-1;
+        while(low<=high)
+        {
+            int mid=(low+high)/2;
+            if(target<nums[mid])
+            {
+                high=mid-1;
+            }
+            else
+            low=mid+1;
+
+            if(nums[mid] == target)
+            idx=mid;
+        }
+        return idx;
+    }
+
+}

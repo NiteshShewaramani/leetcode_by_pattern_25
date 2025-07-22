@@ -1,0 +1,46 @@
+class Solution {
+    public int maxDistance(int[] position, int m) {
+        //n log n
+        Arrays.sort(position);
+        int length = position.length;
+        int low  = 1 ;
+        int high = position[length-1];
+
+        int ans = -1;
+        //O ( log(max value in array) * n  )
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+
+            if(checkFunction(mid,position,m))
+            {
+                ans=mid;
+                low=mid+1;
+            }
+            else
+            high=mid-1;
+        }
+
+        return ans;
+    }
+    //O(n)
+    public boolean checkFunction(int distance,int[] position,int m)
+    {
+        int balls=1;
+        int prevBall = position[0];
+        for(int i=1;i<position.length;i++)
+        {
+            if(position[i]-prevBall >= distance)
+            {
+                prevBall=position[i];
+                ++balls;
+            }
+        }
+
+        if(balls>=m)
+        return true;
+
+        return false;
+
+    }
+}

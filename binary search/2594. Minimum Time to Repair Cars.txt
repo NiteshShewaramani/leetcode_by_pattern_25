@@ -1,0 +1,30 @@
+class Solution {
+    //SC - O(1)
+    //TC - (logk) * n
+    public long repairCars(int[] ranks, int cars) {
+        long low=1;
+        long high=Long.MAX_VALUE;
+        long ans=high;
+        while(low<=high){
+             long mid=low+(high-low)/2;
+             if(poss(ranks,cars,mid)){
+                ans=mid;
+                high=mid-1;
+             }
+             else{
+                low=mid+1;
+             }
+        }
+        return ans;
+    }
+    //TC O(n)
+    public boolean poss(int[] ranks,int cars,long mid){
+        long count=0;
+        for(int x:ranks){
+            long temp=(long)mid/x;
+            count+=Math.sqrt(temp);
+            if(count>=cars) return true;
+        }
+        return false;
+    }
+}

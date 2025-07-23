@@ -1,0 +1,85 @@
+class Solution {
+    /**
+    Time: O(n log n) — sorting and heap operations
+    Space: O(k) — heap size
+    
+     */
+    public long maxScore(int[] nums1, int[] nums2, int k) {
+        int n = nums1.length;
+
+        // Pair up nums1 and nums2 values with their indices
+        int[][] pairs = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            pairs[i][0] = nums2[i];
+            pairs[i][1] = nums1[i];
+        }
+
+        // Sort by nums2[i] in descending order
+        Arrays.sort(pairs, (a, b) -> b[0] - a[0]);
+
+         // Min heap to keep track of top k nums1 values
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        long sum = 0;
+        long maxScore = 0;
+
+        for (int i = 0; i < n; i++) {
+            int curNum1 = pairs[i][1];
+            int curNum2 = pairs[i][0];
+
+            minHeap.offer(curNum1);
+            sum += curNum1;
+
+            // Keep only top k nums1 values
+            if (minHeap.size() > k) {
+                sum -= minHeap.poll();
+            }
+
+            // Once we have k elements, calculate score
+            if (minHeap.size() == k) {
+                maxScore = Math.max(maxScore, sum * curNum2);
+            }
+        }
+
+        return maxScore;
+        
+    }
+}
+
+
+
+
+
+
+
+//dp solution not optimal though
+
+class Solution {
+    Map<String, Long> dp = new HashMap<>();
+    public long maxScore(int[] nums1, int[] nums2, int k) {
+        
+        return recursion(nums1,nums2,k,0,Integer.MAX_VALUE,0);  
+    }
+
+    private long recursion(int[] nums1, int[] nums2, int k,int index,int min,long sum)
+    {
+        if(k==0)
+        {
+            return sum*min;
+        }
+        if(index>=nums1.length)
+        return 0;
+
+        String key = index + "," + k + "," + min + "," + sum;
+        if (dp.containsKey(key)) {
+            return dp.get(key);
+        }
+
+        long take_i = recursion(nums1,nums2,k-1,index+1,Math.min(min,nums2[index]),sum+nums1[index]);
+        long not_take_i = recursion(nums1,nums2,k,index+1,min,sum);
+        long result = Math.max(take_i, not_take_i);
+        dp.put(key, result);
+
+        return  result;
+
+    }
+}

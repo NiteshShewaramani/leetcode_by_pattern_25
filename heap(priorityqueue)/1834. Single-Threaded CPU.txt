@@ -1,0 +1,58 @@
+class Solution {
+    public int[] getOrder(int[][] tasks) {
+        int ans[] = new int[tasks.length];
+        PriorityQueue<int []> queue = new PriorityQueue<>(
+            (int a[],int b[]) -> {
+                if(a[2] == b[2])
+                {
+                    return a[0]-b[0];
+                }
+                return a[2] - b[2];
+            }
+        );
+
+        List<int []> existingTask = new ArrayList();
+
+        for(int i=0;i< tasks.length ; i++)
+        {
+            existingTask.add(new int[]{i , tasks[i][0],tasks[i][1]});
+        }
+        //sort the values by start time
+        Collections.sort(existingTask,(int a[],int b[])
+        ->
+        {
+            return a[1] - b[1];
+        }
+        );
+
+        int ai=0;  
+        //ai : answer index [will help to fill answer array]
+        int ti=0;  
+        //ti : task index [ iterate over existing tasks,will help to know tasks pending]
+        int currentTime=0;
+        int n=ans.length;
+
+//index 0 -> index of task
+//index 1 -> start time of task
+//index 2 -> end time of task
+//Time : O(nlogn) && Space : O(n)
+        while(ai<n)
+        {
+            while(ti<n && existingTask.get(ti)[1] <= currentTime)
+            {
+                queue.add(existingTask.get(ti++));
+            }
+            if(queue.size()==0){
+                currentTime=existingTask.get(ti)[1];
+                continue;
+            }
+            
+            int current[] = queue.poll();
+            currentTime = currentTime + current[2];
+            //processing this task
+            ans[ai++] = current[0];
+        }
+        return ans;
+
+    }
+}

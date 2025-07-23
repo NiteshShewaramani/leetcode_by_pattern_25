@@ -1,0 +1,34 @@
+class Solution {
+/**
+Time complexity : O(N+Nlogk) if k<N and O(1) in the particular case of N=k. That ensures time complexity to be better than O(NlogN).
+
+Space complexity : O(N+k) to store the hash map with not more N elements and a heap with k elements.
+
+ */
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer,Integer> m =new HashMap<Integer,Integer>();
+         
+        for(int i=0;i<nums.length;i++)
+        {
+            m.put(nums[i],m.getOrDefault(nums[i],0)+1);
+        }
+        // init heap 'the less frequent element first'
+        Queue<Integer> heap = new PriorityQueue<>(
+            (n1, n2) -> m.get(n1) - m.get(n2));
+
+        // 2. keep k top frequent elements in the heap
+        // O(N log k) < O(N log N) time
+        for (int n: m.keySet()) {
+          heap.add(n);
+          if (heap.size() > k) heap.poll();    
+        }
+
+        // 3. build an output array
+        // O(k log k) time
+        int[] top = new int[k];
+        for(int i = k - 1; i >= 0; --i) {
+            top[i] = heap.poll();
+        }
+        return top;
+    }
+}

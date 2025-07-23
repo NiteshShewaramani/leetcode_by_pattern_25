@@ -1,0 +1,18 @@
+class Solution {
+    public int kthLargestElement(int[] nums, int k) {
+        //passing comparator to pq
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a,b)-> b-a);
+        // 1 , 2
+        int elementstokeep = (nums.length-k) + 1;
+        for(int i=0;i<nums.length;i++)
+        {
+            pq.offer(nums[i]);
+
+            if(pq.size()>elementstokeep)
+            pq.poll();
+        }
+        return pq.poll();
+
+
+    }
+}

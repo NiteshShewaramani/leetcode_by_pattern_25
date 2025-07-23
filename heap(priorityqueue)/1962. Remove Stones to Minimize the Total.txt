@@ -1,0 +1,25 @@
+class Solution {
+/**
+Time O(n + klogn)
+Space O(n)
+
+ */
+    public int minStoneSum(int[] piles, int k) {
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>((a,b)->b-a);
+        int sum = 0;
+        for(int i : piles)
+        {
+            sum = sum+i;
+            maxHeap.offer(i);
+        }
+        //O(klogn)
+        while(k-- > 0)
+        {
+            int top = maxHeap.poll();
+            sum = sum - (top/2);
+            int newEntry = top - (top/2) ;
+            maxHeap.offer(newEntry);
+        }
+        return sum;
+    }
+}

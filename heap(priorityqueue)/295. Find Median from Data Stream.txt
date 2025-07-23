@@ -1,0 +1,54 @@
+class MedianFinder {
+    PriorityQueue<Integer> left_max_heap;
+    PriorityQueue<Integer> right_min_heap;
+    public MedianFinder() {
+        //top element is maximum    
+        left_max_heap = new PriorityQueue<Integer>((a,b) -> b-a);
+        //top element is minimum
+        right_min_heap = new PriorityQueue<Integer>();
+    }
+    //time O(n logn) - logn for insertion and deletion on heap
+    public void addNum(int num) {
+        if(left_max_heap.size()==0)
+        {
+            left_max_heap.offer(num);
+        }
+        else if(num > left_max_heap.peek())
+        {
+            right_min_heap.offer(num);
+        }
+        else if(num <= left_max_heap.peek())
+        {
+             left_max_heap.offer(num);
+             if(left_max_heap.size() - right_min_heap.size() > 1)
+             {
+                right_min_heap.offer(left_max_heap.poll());
+             }
+        }
+
+        if(right_min_heap.size()>left_max_heap.size() )
+        {
+            left_max_heap.offer(right_min_heap.poll());
+        }
+        
+    }
+    
+    public double findMedian() {
+        int totalSize = right_min_heap.size() + left_max_heap.size();
+
+        if(totalSize%2==0)
+        {
+            return (double) (left_max_heap.peek() + right_min_heap.peek())/2;
+        }
+        else 
+        return (double) left_max_heap.peek();
+        
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */

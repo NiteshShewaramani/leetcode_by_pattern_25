@@ -1,0 +1,29 @@
+class Solution {
+    /**
+    Time complexity: O(n*logk) where k = ladders because heap size would always be k.
+    Space complexity: O(k)
+    The idea is simple create a min heap keep adding to it the difference in heights 
+    if the size of heap is greater than the size of ladders take the minimum height difference out from heap and use bricks here 
+     */
+    public int furthestBuilding(int[] heights, int bricks, int ladders) {
+        int n = heights.length;
+        //min heap of difference of heights
+        PriorityQueue<Integer> countOfLaddersUsed = new PriorityQueue<Integer>();
+        for(int i=0;i<n-1;i++) {
+            int diff = heights[i+1] - heights[i];
+            //our current building height is greater
+            if(diff <= 0) continue;
+
+
+            countOfLaddersUsed.offer(diff);
+
+            if(countOfLaddersUsed.size() > ladders)
+            bricks  = bricks - countOfLaddersUsed.poll();
+
+            if(bricks < 0) return i;
+
+        }
+        return n-1;
+    }
+
+}

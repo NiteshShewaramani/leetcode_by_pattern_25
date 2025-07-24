@@ -1,0 +1,36 @@
+class Solution {
+    /**
+    Time Complexity - O(n) - At initial glance it might seem that we have multiple loops that might lead to complexity greater than O(n); however, if we take a close look, we can see that each node would be processed maximum of 2 times. Once while the processing of itself and the second time either while removing out of window elements of the onces which are less than the current maximum score.
+    Space - O(n) for queue
+    
+     */
+    public int maxResult(int[] nums, int k) {
+        //nums = [1,-1,-2,4,-7,3], k = 2
+        //You are initially standing at index 0 
+        //we are always staring at index 0 so add it to queue 
+        Deque<Pair<Integer, Integer>> deque = new LinkedList<>() {{
+            offer(new Pair<>(0, nums[0]));
+        }};
+        int max = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            //remove elements 1 by 1 as we move out of window
+            if (!deque.isEmpty() && deque.peekFirst().getKey() < i - k) {
+                deque.pollFirst();
+            }
+
+            max = nums[i] + (deque.isEmpty() ? 0 : deque.peekFirst().getValue());
+            //monotonic queue 
+            // we are going from largest to smallest value in queue 
+            // lasgest value will be at front 
+            while (!deque.isEmpty() && deque.peekLast().getValue() <= max) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(new Pair<>(i, max));
+        }
+
+        return max;
+    }
+
+}

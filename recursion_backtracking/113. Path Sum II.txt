@@ -1,0 +1,35 @@
+//Simple dfs TC O(n) + O(k)(copying elements to ans)
+//SC O(n)
+class Solution {
+    List<List<Integer>> ans;
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        ans = new ArrayList();
+        recursion(root,targetSum,new ArrayList());
+        return ans;
+    }
+
+    public void recursion(TreeNode root, int targetSum,List<Integer> cur )
+    {
+        if(root == null)
+        return;
+
+        
+
+        cur.add(root.val);
+            
+        if(root.left!=null)
+        recursion(root.left,targetSum - root.val,cur);
+
+        if(root.right!=null)
+        recursion(root.right,targetSum - root.val,cur);
+
+        
+        if(targetSum == root.val && root.left ==null && root.right==null)
+        {
+            ans.add(new ArrayList(cur));
+        }
+
+        //backtrack 
+        cur.remove(cur.size()-1);
+    }
+}

@@ -1,0 +1,44 @@
+class Pair
+{
+    public int chargeCost, index;
+    public Pair(int cost , int i)
+    {
+        chargeCost = cost;
+        index = i;
+
+    }
+}
+class Solution {
+//TC O (nlogn)
+//SC O (n)
+    public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
+        PriorityQueue<Pair> maxHeap = new PriorityQueue<Pair>((Pair a , Pair b) ->  b.chargeCost - a.chargeCost);
+
+        int ans = 0 , start = 0 , end = 0;
+        long sum = 0;
+        //O(n log n)
+        while(end < chargeTimes.length)
+        {
+            maxHeap.offer(new Pair(chargeTimes[end],end));
+            sum = sum + runningCosts[end];
+
+            //remove max value if it out of window
+            while(maxHeap.peek().index < start)
+            {
+                maxHeap.poll();
+            }
+            //get current cost
+            long currentBudget = (end-start+1)*sum + maxHeap.peek().chargeCost;
+            if(currentBudget<=budget)
+            {
+                ans= Math.max(ans,end-start+1);
+            }
+            else
+            {
+                sum = sum - runningCosts[start++];
+            }
+            end++;
+        }
+        return ans;
+    }
+}

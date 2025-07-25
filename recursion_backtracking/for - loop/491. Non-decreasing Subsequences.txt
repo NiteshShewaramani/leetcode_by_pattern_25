@@ -1,0 +1,33 @@
+class Solution {
+    HashSet<List<Integer>> hashSet = new HashSet<>();
+    /**
+    TC O(2^n  * n)
+    //SC O(2^n  * n)
+    This is because for each element in the array, the algorithm has two choices: to include it in the current subsequence or not.
+     */
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        recursion(0,nums,new ArrayList(),0);
+        List<List<Integer>> result = new ArrayList<>(hashSet);
+        return result;
+    }
+
+    public void recursion(int index,int[] nums,List<Integer> currentElements,int prev)
+    {
+        if(currentElements.size()>=2)
+        {
+            hashSet.add(new ArrayList(currentElements));
+        }
+
+        for(int i=index;i<nums.length;i++)
+        {
+             if(currentElements.size() == 0 || nums[i]>= prev )
+             {
+                currentElements.add(nums[i]);
+                
+                recursion(i+1 , nums , currentElements , nums[i] );
+                
+                currentElements.remove(currentElements.size()-1);
+            }                        
+        }
+    }
+}

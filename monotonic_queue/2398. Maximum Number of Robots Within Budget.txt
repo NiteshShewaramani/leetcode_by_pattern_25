@@ -1,0 +1,35 @@
+class Solution {
+//TC - O(n)
+//SC - O(n)
+   public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
+        int right =0 , left = 0  ,max=0,window=0;
+        long  sum =0;
+        Deque<Integer> d = new LinkedList<>();
+        while(right<chargeTimes.length)
+        {
+            
+            sum = sum + runningCosts[right];
+            /**
+            making sure the element in queue is max 
+             */
+            while (!d.isEmpty() && chargeTimes[d.peekLast()] <= chargeTimes[right])
+                d.pollLast();
+
+            d.addLast(right);    
+
+            max = chargeTimes[d.getFirst()];
+            long product = max +  (sum * (right - left +1));
+            //invalid shrink the window size
+            if(chargeTimes[d.getFirst()] + (sum * (right - left +1)) > budget)
+            {
+                //recalculate max ?
+                if (d.getFirst() == left)
+                    d.pollFirst();
+
+                sum = sum - runningCosts[left++];
+            }
+            window = Math.max(window,(right - left +1));
+            right++;
+        }
+        return window;
+    }

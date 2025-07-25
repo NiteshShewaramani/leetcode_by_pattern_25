@@ -1,0 +1,71 @@
+class Solution {
+    /**
+    Time complexity: O(m * n * 4^L), where L is the length of the word, and m x n are the grid dimensions. 
+    As we are finding the word of length L, the depth of the recursion is L. 
+    Each cell can produce up to 4 recursive calls (for adjacent directions), leading to 4^L calls per word.
+     This process is repeated for every cell in the worst case, which adds the factor of m * n.
+    Space complexity: O(L), due to the recursion stack used in backtracking. 
+    The depth of recursion corresponds to the length of the word.
+     */
+    public boolean exist(char[][] board, String word) {
+        //ascii value of charcters
+        int arr[] = new int[128];
+        for(int n=0;n<board.length;n++)
+        {
+            for(int m=0;m<board[0].length;m++ )
+            {
+                //keeping count of characters
+                ++arr[board[n][m]];
+            }
+        }
+        for(char ch : word.toCharArray())
+        {
+            if(--arr[ch]<0)
+            {
+                //this means the character
+                //does not exists on the board so return false
+                return false;
+            }
+        }
+        
+        for(int n=0;n<board.length;n++)
+        {
+            for(int m=0;m<board[0].length;m++ )
+            {
+                if(recursion(board,0,n,m,word))
+                {
+                   return true; 
+                }
+            }
+        }       
+        return false;
+    }
+
+
+    private boolean recursion(char[][] board,int count,int r,int c,String word)
+    {
+        if(count == word.length())
+        {
+            return true;
+        }
+        //all conditions for outbounds and check if word is equal or not
+        if(r>=board.length||c>=board[0].length || r<0||c<0 ||word.charAt(count) != board[r][c] )
+        {
+            return false;
+
+        }
+        //it marks as current word is seen
+        board[r][c]='*';
+
+        boolean ans=recursion(board,count+1,r+1,c,word)||
+        recursion(board,count+1,r-1,c,word)||
+        recursion(board,count+1,r,c+1,word) ||
+        recursion(board,count+1,r,c-1,word);
+
+
+        //this will set the word character back to its original value
+        board[r][c]=word.charAt(count);
+        return ans;
+        
+    }
+}

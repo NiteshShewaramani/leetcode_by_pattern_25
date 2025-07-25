@@ -1,0 +1,25 @@
+class Solution {
+    //TC (2^n   x n)
+    //SC (2^n) x O(k) k is the average length  2^n subsets with average length of k 
+    List<List<Integer>> ans= new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        recursion(nums,0,new ArrayList());
+        return ans;
+    }
+
+    public void recursion(int[] nums,int start,List<Integer> temp)
+    {
+        ans.add(new ArrayList<>(temp));
+        for(int i=start;i<nums.length;i++)
+        {
+            //remove duplicates
+            if(i>start && nums[i]==nums[i-1])
+            continue;
+            
+            temp.add(nums[i]);
+            recursion(nums,i+1,temp);
+            temp.remove(temp.size()-1);
+        }
+    }
+}

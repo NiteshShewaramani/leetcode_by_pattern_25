@@ -1,0 +1,31 @@
+//Time complexity: ( O(4^n) ), where ( n ) is the length of the input string. In the worst case, each digit can represent 4 letters, so there will be 4 recursive calls for each digit.
+//Space complexity: ( O(n) ), where ( n ) is the length of the input string. This accounts for the recursion stack space.
+
+class Solution {
+    List<String> ans= new ArrayList<>();
+    String arr[]=new String[]{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    public List<String> letterCombinations(String digits) {
+        if(digits.length()==0)
+        return ans;
+
+        recursion(digits,new StringBuilder(),0);
+        return ans;       
+    }
+
+    public void recursion(String digits,StringBuilder  sb,int start)
+    {
+        if(sb.length()==digits.length())
+        {
+            ans.add(sb.toString());
+            return;
+        }
+        for(int i=start;i<digits.length();i++)
+        {
+            String value = arr[digits.charAt(i)-'0'];
+            for(int j=0;j<value.length();j++)
+            {
+            recursion(digits,new StringBuilder(sb).append(value.charAt(j)),i+1);                
+            }
+        }
+    }
+}

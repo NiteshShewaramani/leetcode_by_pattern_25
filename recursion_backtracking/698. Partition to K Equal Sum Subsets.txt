@@ -1,0 +1,34 @@
+class Solution {
+//Tc O(K∗2^N)
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        // Not possible to divide into equal subsets, if sum of all 
+        // nums[] is not a multiple of k.
+        int sum = 0;
+        for (int i = nums.length - 1; i >= 0; i--)  sum += nums[i];
+        if ((sum % k) != 0)  return false;
+        
+        // Determine the target number that each subset must total.
+        // Then start recursion to find if possible to have k equal 
+        // subsets.
+        int target = sum / k;
+        return dfs(k, 0, 0, nums, target);
+    }
+    
+    
+    private boolean dfs(int kRemainingToFill, int curSum, int numsIdx, int[] nums, int target) {
+        if (kRemainingToFill <= 0)  return true;        // If no more subsets to fill, then done.
+        for (int i = numsIdx; i < nums.length; i++) {   // Loop in nums[] values to find next unused.
+            if (nums[i] != 0 && curSum + nums[i] <= target) {
+                int temp = nums[i];
+                nums[i] = 0;                            // Mark this nums value as "used".
+                if (curSum + temp == target) {          // If subset exactly filled, start new subset.
+                    if (dfs(kRemainingToFill - 1, 0, 0, nums, target))  return true;
+                } else {                                // Else subset not filled, find more to fill it.
+                    if (dfs(kRemainingToFill, curSum + temp, i + 1, nums, target))  return true;
+                }
+                nums[i] = temp;                         // This nums[i] value didn't result in a good 
+            }                                           //   solution, so "unuse" this nums[] value and  
+        }                                               //   loop back to try another nums[] value
+        return false;
+    }
+}

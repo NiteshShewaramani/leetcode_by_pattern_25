@@ -1,0 +1,29 @@
+class Solution {
+    int result;
+    //TC O(n*(3^m)) n is base topping for loop m is toppingCosts 
+    //SC O(1) no extra space used
+    public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
+        result = baseCosts[0];
+        //runa loop for base ice creame cost
+        
+        for(int base: baseCosts)
+            helper(base, toppingCosts, 0, target);
+
+        return result;
+    }
+    private void helper(int current, int[] toppingCosts, int index, int target) {
+        //current is equal to previous result & current is less than previous swap it 
+        if( Math.abs(target - current) < Math.abs(target - result) || Math.abs(target - current) == Math.abs(target - result) && current < result)
+            result = current;
+        
+        //base case
+        if(index==toppingCosts.length || current >= target) return;
+        
+        //zero toppingsselected  move to next
+        helper(current, toppingCosts, index + 1, target);
+        //one toppings selected then move to next
+        helper(current + toppingCosts[index], toppingCosts, index + 1, target);
+        //two toppings selected then move to next
+        helper(current + toppingCosts[index]*2, toppingCosts, index + 1, target);
+    }
+}

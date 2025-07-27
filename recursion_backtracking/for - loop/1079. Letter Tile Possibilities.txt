@@ -1,0 +1,25 @@
+class Solution {
+    Set<String> set = new HashSet<>();
+    public int numTilePossibilities(String tiles) {
+        int [] seen = new int[tiles.length()];
+        Arrays.fill(seen,-1);
+        recursion(tiles,seen,"");
+        return set.size()-1;
+    }
+    //TC(2 ^ N)
+    private void recursion(String t,int[] seen,String current)
+    {
+        set.add(current);
+
+        for(int i=0;i<t.length();i++)
+        {
+            if(seen[i]==-1)
+            {
+                seen[i] = i;
+                recursion(t,seen,current+t.charAt(i));
+                seen[i] = -1;
+            }
+        }
+        
+    }
+}

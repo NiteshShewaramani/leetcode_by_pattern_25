@@ -1,0 +1,38 @@
+class Solution {
+    /**
+    time: O(k^n) where n is cookies.length
+    space: O(k+n) where k is children array, n is number of call stacks
+     */
+    int res = Integer.MAX_VALUE;
+    public int distributeCookies(int[] cookies, int k) {
+        dfs(cookies, 0, k, new int[k]);
+        return res;
+    }
+
+    void dfs(int[] cookies, int cur, int k, int[] children) {
+        if (cur == cookies.length) {
+            int max = 0;
+            for (int c : children) 
+                    max = Math.max(max, c);
+            
+            res = Math.min(res, max);
+            return;
+        }
+        //traverse all combinations
+        for (int i = 0; i < k; i++) {
+            children[i] += cookies[cur];
+            dfs(cookies, cur + 1, k, children);
+            children[i] -= cookies[cur];
+            /**
+            ig this line works because children[i]==0 means you had tried giving this child one bag, and as you are iterating from 0 to k for i, 
+            this means you haven't tried giving this bag to next children yet. Now in next iteration, you will give this same bag to next child, 
+            which will be similar to giving this bag to the current child, because here all children are identical. 
+            So you are just exploring redundant possiblities by giving the same bag to different children, 
+            and those all possibilities will give the same answer. So if you break, then you don't explore all that,
+            and your execution time decreases greatly.
+             */
+            if(children[i] == 0)
+            break;
+        }
+    }
+}

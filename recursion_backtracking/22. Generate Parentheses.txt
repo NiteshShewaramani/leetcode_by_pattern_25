@@ -12,7 +12,7 @@ class Solution {
 						      |	                             |
 					res.append('(())')             res.append('()()')
 //Time comlexity-> 2^n since it will take 2^n recursive calls & 
-//Space complexity -> n as space grows as Target grows
+//Space complexity ->(2*n) ~ O(n) as space grows as Target grows
  */
 
     public List<String> generateParenthesis(int n) {

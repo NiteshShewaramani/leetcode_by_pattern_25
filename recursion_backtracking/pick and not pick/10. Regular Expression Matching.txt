@@ -1,0 +1,41 @@
+class Solution {
+    //TC O(2^n)
+    //SC O(max_of_length(s,p)) recursion depth will be max length
+    public boolean isMatch(String s, String p) {
+        return Solve(s,p,0,0);
+    }
+
+    private boolean Solve(String s, String p,int pointerS,int pointerP)
+    {
+        if(p.length() == pointerP)
+        {
+            if(s.length()==pointerS)
+            return true;
+
+            return false;
+        }
+
+        if(pointerP+1 < p.length() && p.charAt(pointerP+1) == '*')
+        {
+            //move p by 2 places
+            boolean notTake = Solve(s,p,pointerS,pointerP+2);
+            boolean take  = false;
+            if(pointerS<s.length())
+            {
+                if((p.charAt(pointerP) == s.charAt(pointerS)) || p.charAt(pointerP) == '.' ) {
+                    take = Solve(s,p,pointerS+1,pointerP);
+                }
+            }
+            return notTake || take;
+        }
+        else
+        {
+            if(pointerS<s.length() && pointerP<p.length())
+            {
+                return ((p.charAt(pointerP) == s.charAt(pointerS) || p.charAt(pointerP) == '.' )&&  Solve(s,p,pointerS+1,pointerP+1));
+            }
+            else
+            return false;
+        }
+    }
+}

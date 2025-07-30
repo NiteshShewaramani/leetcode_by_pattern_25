@@ -1,0 +1,47 @@
+class Solution {
+    int ans = 0;
+    //TC O(2^m * n )here m is no of requests and n is no of buildings 
+    //SC O(n) 
+    public int maximumRequests(int n, int[][] requests) {
+        int building[] = new int[n];
+        recursion(requests,building,0,0);
+        return ans;
+    }
+
+    private void recursion(int[][] requests,int building[],int count,int start)
+    {
+        //base case
+        if(start >= requests.length)
+        {
+            int curCount=0;
+            for(int j : building)
+            {
+                if(j==0)
+                ++curCount;
+            }
+            if(curCount==building.length)
+            {
+                //all values  zero means all request were successfull
+                ans = Math.max(ans,count);
+            }
+            return;
+        }
+
+
+         //apply pick not pick on requests   
+        int from = requests[start][0];
+        int to   = requests[start][1];
+        building[from]--;
+        building[to]++;
+
+        //explore now
+        recursion(requests,building,count+1,start+1);
+        //backtrack
+        building[from]++;
+        building[to]--;
+        //not pick
+        recursion(requests,building,count,start+1);        
+          
+
+    }
+}

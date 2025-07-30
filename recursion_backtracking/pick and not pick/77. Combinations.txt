@@ -1,0 +1,25 @@
+class Solution 
+{
+    List<List<Integer>> result = new ArrayList();
+    public List<List<Integer>> combine(int n, int k) {
+        solve(n,k ,1,new ArrayList());
+        return result;
+    }
+    //TC taking all combination for k places n C k  -> n! / (n-k)! * k!
+    private void solve(int n, int k,int start,List<Integer> temp)
+    {
+        if(k==0)
+        {
+            result.add(new ArrayList(temp));
+            return;
+        }
+        if(start>n)
+        return;
+        //pick
+        temp.add(start);
+        solve(n,k-1 ,start+1,temp);
+        temp.remove(temp.size()-1);
+        //not pick
+        solve(n,k ,start+1,temp);
+    }
+}

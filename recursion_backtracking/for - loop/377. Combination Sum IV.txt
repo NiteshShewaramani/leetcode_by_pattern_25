@@ -1,0 +1,37 @@
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        Integer[] memo = new Integer[target + 1];
+        return recursion(nums,target,0,memo);
+    }
+//     1 D - dp
+
+// Time: O(n × target)
+
+// Space: O(target)
+    private int recursion(int nums[],int target,int index,Integer memo[])
+    {
+        if(index>= nums.length || target<0)
+        return 0;
+
+
+        if(target == 0)
+        {
+            return 1;
+        }
+        if(memo[target] != null)
+        {
+            return memo[target];
+        }
+        int result = 0;
+        //since we are moving i++ will take care of not -pick case
+        for(int i=index;i<nums.length;i++)
+        {
+            //pick case will be zero because if we have 1,2,3
+            //then we can pick 2 then pick 1 again so to go to 0 index 
+            //we set 0 as index in pick condition
+            int take_i = recursion(nums,target-nums[i],0,memo);
+            result = result + take_i;
+        }
+        return memo[target] =  result;
+    }
+}

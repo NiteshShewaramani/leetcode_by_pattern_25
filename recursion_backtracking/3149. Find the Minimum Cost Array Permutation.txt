@@ -1,0 +1,55 @@
+class Solution {
+    int minScore = Integer.MAX_VALUE;
+    int[] ans ;
+    public int[] findPermutation(int[] nums) {
+        int currentPermutation[] = new int[nums.length];
+        int seen[] = new int[nums.length];
+        ans = new int[nums.length];
+        currentPermutation[0]=0;
+        seen[0]=1;
+        solve(nums,currentPermutation,seen,1);
+        return ans;
+
+        
+    }
+//TC O(N!)
+    public void solve(int[] nums,int currentPermutation[],int seen[],int idx)
+    {
+        //base case O(n) + O(n)
+        if(idx >= nums.length)
+        {
+            //calculate score now
+            int score = 0;
+            int i=0;
+            for(;i<currentPermutation.length-1;i++)
+            {
+                //from Q
+                score = score + Math.abs(currentPermutation[i] -  nums[currentPermutation[i+1]]);
+            }
+              score = score + Math.abs(currentPermutation[i] -  nums[currentPermutation[0]]);
+              //System.out.println("score is " + score);
+              if(score<minScore)
+              {
+                //make deep copy
+                for(int k=1;k<nums.length;k++)
+                {
+                    ans[k] = currentPermutation[k];
+                }
+                minScore = score;
+                return;
+              }
+        }
+
+        for(int j=1;j<nums.length;j++)
+        {
+            if(seen[j]==0)
+            {
+                currentPermutation[idx]=j;
+                seen[j]=1;
+                solve(nums,currentPermutation,seen,idx+1);
+                currentPermutation[idx]=0;
+                seen[j]=0;
+            }
+        }
+    }
+}

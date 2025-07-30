@@ -1,0 +1,25 @@
+class Solution {
+    List<List<Integer>> ans=new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        List<Integer> output=new ArrayList<>();
+        int index=1;
+        solve(index, output, n , k);
+        return ans;
+    }
+    void solve(int index, List<Integer> output,int n, int k){
+        //Base Case
+        if(output.size()==k){
+            ans.add(new ArrayList<Integer>(output));
+            return;
+        }
+        //Solve for one case
+        for(int i=index;i<=n;i++){
+            output.add(i);
+            //Recursive call
+            // here we are increasing value of index so that it can process 
+            //for the complete list for one value of i
+            solve(i+1,output,n,k);
+            output.remove(output.size()-1);//Backtracking essential step
+        }
+    }
+}

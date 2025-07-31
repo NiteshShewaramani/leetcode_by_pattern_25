@@ -1,0 +1,35 @@
+class Solution {
+    int ans = 0;
+    //TC O (2^n)
+    //SC O(2^n) extra space for subsets stored in curr 
+    public int beautifulSubsets(int[] nums, int k) {
+        List<Integer> cur = new ArrayList();
+        solve(nums,k,0,cur);
+        return ans; 
+    }
+
+    private void solve(int nums[],int k,int start,List<Integer> cur)
+    {
+        //explored the subset
+        if(cur.size()>=1)
+        {
+            //increase the value
+            ++ans;
+        }
+
+        for(int i=start;i<nums.length;i++)
+        {
+            if(cur.contains(nums[i] - k) || cur.contains(nums[i] +k))
+            {
+                continue;
+            }
+            else
+            {
+                cur.add(nums[i]);
+                solve(nums,k,i+1,cur);
+                cur.remove(cur.size()-1);
+            }
+        }
+
+    }
+}

@@ -1,0 +1,72 @@
+class Solution {
+    int maxGold = 0;
+    //TC O(N*M)(for traversing the grid )  +  O(4^ (M∗N)) bcaz in worst case for every cell we will travers and check all 4 directions
+    //SC O(1) no extra space used , depth of stack will be N*M
+    public int getMaximumGold(int[][] grid) {
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]>0)
+                {
+                    int temp = grid[i][j];
+                    grid[i][j]=0; // mark visited
+                    solve(i,j,grid,temp);
+                    grid[i][j] = temp; // backtrack
+                }
+            }
+        }
+        return maxGold;
+        
+    }
+    private void solve(int x,int y,int[][] grid , int gold)
+    {
+        int n = grid.length , m = grid[0].length;
+        if(x<0 || y<0)
+        return;
+        if(x>=n || y>=m)
+        return;
+
+        if(gold>maxGold)
+        maxGold = gold;
+
+        //go up
+        if(x-1>=0 && grid[x-1][y]>0)
+        {
+            int temp = grid[x-1][y];
+            grid[x-1][y]=0;
+            solve(x-1,y,grid, gold + temp);
+            grid[x-1][y] = temp;
+        }
+
+        //go down
+
+        if(x+1<n && grid[x+1][y] > 0)
+        {
+            int temp = grid[x+1][y];
+            grid[x+1][y]=0;
+            solve(x+1,y,grid, gold + temp);
+            grid[x+1][y] = temp;
+        }
+
+        //go left
+        if(y-1>=0 && grid[x][y-1]>0)
+        {
+            int temp = grid[x][y-1];
+            grid[x][y-1]=0;
+            solve(x,y-1,grid, gold + temp);
+            grid[x][y-1] = temp;
+
+        }
+        //go right
+        if(y+1<m && grid[x][y+1]>0)
+        {
+            int temp = grid[x][y+1];
+            grid[x][y+1]=0;
+            solve(x,y+1,grid, gold + temp);
+            grid[x][y+1] = temp;
+
+        }
+
+    }
+}

@@ -1,0 +1,53 @@
+class Solution {
+    //TC O(N) + O(N)
+    //SC O(N) + O(N)
+    public int rob(int[] nums) {
+        if(nums.length==1)
+        return nums[0];
+        
+        int n= nums.length;
+        int[] arr1 = new int[n - 1]; //from 0 to n-1 house
+        int[] arr2 = new int[n - 1]; //from 1 to n house
+
+        // Populate arr1 and arr2
+        for (int i = 0; i < n; i++) {
+            if (i != n - 1)
+                arr1[i] = nums[i];
+            if (i != 0)
+                arr2[i - 1] = nums[i];
+        }
+        int firstTaken = func(arr1);
+
+        int lastTaken = func(arr2);
+        return Math.max(firstTaken,lastTaken);
+        
+    }
+
+    // Function to solve the problem using tabulation
+    private int func(int[] nums) {
+        int n = nums.length;
+   
+        // Base case
+        int prev2 = 0;
+        int prev1 = nums[0];
+
+        // Iterate through the elements of the array
+        for (int i = 1; i < n; i++) {
+            
+            /* Calculate maximum value by either picking
+            the current element or not picking it */
+            int pick = nums[i];
+            if (i > 1)
+                pick += prev2;
+            int nonPick = prev1;
+
+            // Store the maximum value in previous variables
+            prev2 = prev1;
+            prev1 = Math.max(pick,nonPick);
+        }
+
+        
+        return prev1;
+    }
+
+}

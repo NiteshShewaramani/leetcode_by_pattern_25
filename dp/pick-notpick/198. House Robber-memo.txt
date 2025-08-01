@@ -1,0 +1,27 @@
+class Solution {
+    public int rob(int[] nums) {
+        int dp[]=new int [nums.length];
+
+        Arrays.fill(dp,-1);
+
+        return calculate(0,nums,dp);
+    }
+    //TC O(n)
+    //SC O(n)
+    private int calculate(int index,int[] nums,int dp[])
+    {
+        if(index >= nums.length)
+        return 0;
+
+        if(dp[index]!=-1)
+        return dp[index];
+
+        
+        int notTaken = calculate(index+1,nums,dp);
+        int taken = calculate(index+2,nums,dp) + nums[index];
+
+        dp[index] = Math.max(taken,notTaken);
+
+        return dp[index];
+    }
+}

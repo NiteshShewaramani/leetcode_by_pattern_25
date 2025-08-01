@@ -1,0 +1,28 @@
+class Solution {
+    //TC O(N) + O(N)
+    //SC O(N)
+    public int rob(int[] nums) {
+        if(nums.length==1)
+        return nums[0];
+        int dp[] = new int[nums.length];
+        Arrays.fill(dp,-1);
+        int firstTaken =  memorization(0,nums,dp,nums.length-1);
+        //we need to reset the dp again
+        Arrays.fill(dp,-1);
+        int lastTaken = memorization(1,nums,dp,nums.length);
+        return Math.max(firstTaken,lastTaken);
+        
+    }
+
+    private int memorization(int ind,int[] nums,int dp[],int n){
+        if(ind>=n)
+        return 0;
+        if(dp[ind]!=-1)
+        return dp[ind];
+
+        int taken = nums[ind] + memorization(ind+2,nums,dp,n);
+        int notTaken = memorization(ind+1,nums,dp,n);
+        dp[ind] = Math.max(notTaken,taken);
+        return dp[ind];
+    }
+}

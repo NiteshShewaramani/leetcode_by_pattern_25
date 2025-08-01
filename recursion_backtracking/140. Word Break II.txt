@@ -1,0 +1,42 @@
+class Solution {
+    /**
+    TC O(2^n) n is lenght of strings we have 2 options to add space before the word or not
+    SC O(length of wordDict) stack depth will be no of words in dictonary + O(2^n) possibilities we are storing in current arraylist for each stack 
+     */
+    private void helper(String s, int i, Set<String> dict, List<String> cur, List<String> res) {
+        //base case coved the entire string
+        if (i == s.length()) {
+            if (cur.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < cur.size(); j++) {
+                    if (j > 0) {
+                        //add space btw 2 words
+                        sb.append(' ');
+                    }
+                    sb.append(cur.get(j));
+                }
+                res.add(sb.toString());
+            }
+            return;
+        }
+        //traversing entire string 1 by 1 to explore all possibilities
+        for (int j = i+1; j <= s.length(); j++) {
+            //check if word is there is dictinoary 
+            if (dict.contains(s.substring(i, j))) {
+                //add word to current selected word
+                cur.add(s.substring(i, j));
+
+                helper(s, j, dict, cur, res);
+                //backtrack 
+                cur.remove(cur.size() - 1);
+            }
+        }
+    }
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
+        List<String> res = new ArrayList<>();
+        List<String> cur = new ArrayList<>();
+        helper(s, 0, dict, cur, res);
+        return res;
+    }
+}

@@ -1,0 +1,62 @@
+class Solution {
+/**
+Time Complexity: O(N*k), where N is the given size of given array. As for each element of the array, we are considering all possible steps from 1 to k.
+
+Space Complexity:O(N), an additional array dp of size n is used to store intermediate results. Hence, the space complexity is O(N).
+*/
+    public int frogJump(int[] heights, int k) {
+        int ind = heights.length;
+        int dp[] = new int[ind+1];
+        Arrays.fill(dp,-1);
+
+        dp[0] = 0; 
+        //tabular
+        // Loop through the array
+        for (int i = 1; i < ind; i++) {
+            int mmSteps = Integer.MAX_VALUE;
+            
+            // Loop to try all possible jumps from 1 to k
+            for (int j = 1; j <= k; j++) {
+                if (i - j >= 0) {
+                    int jump = dp[i - j] + Math.abs(heights[i] - heights[i - j]);
+                    
+                    //Update the minimum energy
+                    mmSteps = Math.min(jump, mmSteps);
+                }
+            }
+            
+            dp[i] = mmSteps;
+        }
+        
+        // Result is stored in the last element of dp
+        return dp[ind - 1];
+
+        //return recursion (heights, k,0,dp);
+
+    }
+/**
+Time Complexity: O(k*N),The function is called recursively for each index from N-1 down to 0. For each index, the function explores up to k possible jumps, where N is the length of the heights array.
+
+Space Complexity:O(N)+O(N), We are using a recursion stack space O(N) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N).
+*/
+    private int recursion(int[] heights, int k,int index , int dp[])
+    {
+        int n = heights.length;
+        //base case
+        if(index  == n-1)
+        return 0;
+
+        if(dp[index]!=-1)
+        return dp[index];
+
+        int min = 10000000;
+        int current = 0;
+
+        for(int i=index+1 ; i <= Math.min(index+k,n-1) ; i++)
+        {
+            current = Math.abs(heights[index]-heights[i]) +  recursion (heights,  k,i ,dp);
+            min = Math.min(current,min);
+        }
+        return dp[index]=min;
+    }
+}

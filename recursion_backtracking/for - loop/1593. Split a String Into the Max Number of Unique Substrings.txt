@@ -1,0 +1,46 @@
+class Solution {
+    int maxSize = 0;
+    //Time Complexity: O(n^2 x  2^n)
+    /**
+    The function recursively explores all possible substrings of the input string. For each starting index start, it iterates over every possible end index end, which can be up to n, creating a nested loop structure that takes O(n^2) per recursive depth due to the substring creation operation.
+
+Specifically, the substring operation s[start:end] takes O(k) time where k is the length of the substring. Over all recursive calls, this results in O(n^ 2) for each split due to the cumulative cost of substring operations at each level.
+
+In the worst case, there are 2^n
+  possible ways to partition the string, as each character can either start a new substring or continue the previous one, forming an exponential number of combinations. Thus, the recursion branches exponentially, contributing an additional O(2^ n) factor.
+
+Combining these, we get a total time complexity of O(n^2 x 2^n). 
+The O(n^2) factor accounts for the cost of generating substrings within each partition, 
+and the O(2^n) factor represents the exponential number of partitioning combinations.
+
+ //Space complexity: O(n)
+     */
+
+    public int maxUniqueSplit(String s) {
+        recursion(s,0,new ArrayList());
+        return maxSize;
+    }
+
+    private void recursion(String s, int index , List<String> current)
+    {
+        if(index>=s.length())
+        {
+            maxSize = Math.max(maxSize,current.size());
+            return;
+        }
+
+        for(int j=index+1;j<=s.length();j++)
+        {
+            //System.out.println("word is " + s.substring(index,j));
+            if(!current.contains(s.substring(index,j)))
+            {
+                current.add(s.substring(index,j)); //do
+                //explore
+                recursion(s,j,current);
+                //undo
+                current.remove(current.size()-1);
+            }
+        }
+
+    }
+}

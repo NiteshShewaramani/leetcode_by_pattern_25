@@ -1,0 +1,47 @@
+class Solution {
+    //TC O(n)
+    //SC O(1)
+    public int climbStairs(int n) {
+        if(n==1)
+        return 1;
+        int firstJump=1;
+        int secondJump=2;
+        for(int ind=3;ind<=n;ind++)
+        {
+            int currentJump=firstJump+secondJump;
+            firstJump=secondJump;
+            secondJump=currentJump;
+        }
+        return secondJump;
+    }
+
+    public int climbStairsTabular(int n) {
+        if(n==1)
+        return 1;
+        int dp[]=new int[n+1];
+        // Arrays.fill(dp,-1);
+        dp[1]=1;
+        dp[2]=2;
+        for(int ind=3;ind<=n;ind++)
+        {
+            int firstJump = dp[ind-1];
+            int secondJump = dp[ind-2];
+            dp[ind]=firstJump+secondJump;
+        }
+        return dp[n];
+        //return memorization(n,dp,0);
+    }
+    public int memorization(int n,int dp[],int ind)
+    {
+        if(ind == n)
+        return 1;
+        if(ind>n)
+        return 0;
+        if(dp[ind]!=-1)
+        return dp[ind];
+        int firstJump = memorization(n,dp,ind+1);
+        int secondJump = memorization(n,dp,ind+2);
+        dp[ind] = firstJump+secondJump;
+        return dp[ind];
+    }
+}

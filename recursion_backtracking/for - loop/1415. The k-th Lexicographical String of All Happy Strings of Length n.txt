@@ -1,0 +1,52 @@
+class Solution {
+    String ans="";
+    int elementNoK =0;
+    String elements[] = new String[]{"a","b","c"};
+    public String getHappyString(int n, int k) {
+        elementNoK = k;
+        solve(n,new ArrayList(),"");
+        return ans;
+    }
+/**
+for every character in length n we have following possibility
+_   _   _   _
+a   b-c
+b   a-c
+c   a-b
+
+3*2^(n-1) at first place we have 3 possibilities but after that every place has 2 possibilities
+the max size of List<String> is n
+TC O(3 x 2^(n-1))
+SC O(n) stack depth will also go to n
+ */
+    private void solve(int n, List<String> sb,String prev)
+    {
+        if(n == sb.size())
+        {
+            --elementNoK;
+            //found kth element
+            if(elementNoK==0)
+            {
+                //reduce to convert list to string
+                ans = sb.stream().reduce((x,y)->x+y).get();
+            }
+            return;
+        }
+        //pruning early if already found k then return
+        if(elementNoK<0)
+        return;
+
+        for(int i=0;i<=2;i++)
+        {
+            //System.out.println(" prev is " +prev + " elementis " + elements[i]);
+            if(!prev.equals(elements[i]))
+            {
+                sb.add(elements[i]); //do
+                //explore
+                solve(n,sb,elements[i]);
+                //backtrack remove last char
+                sb.remove(sb.size() - 1);
+            }
+        }
+    }
+}

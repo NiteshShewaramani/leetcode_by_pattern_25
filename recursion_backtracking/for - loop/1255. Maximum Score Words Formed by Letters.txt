@@ -1,0 +1,58 @@
+class Solution {
+    int maxScore = 0;
+    /**
+    2^n possibilities and we navigate each word in for loop for every possibility
+     TC O(2^n * l) l is average length of word
+     SC O(n) depth is n words , count is the extra array we used but that is only 25 
+     */
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        //base case
+        if (words == null || words.length == 0 || letters == null || letters.length == 0 || score == null || score.length == 0) return 0;
+
+        int[] count = new int[score.length];
+        for (char ch : letters) {
+            count[ch - 'a']++;
+        }
+        
+        backtrack(words, count, score, 0,0);
+        return maxScore;
+    }
+    
+    void backtrack(String[] words, int[] count, int[] score, int index,int currentScore) {
+        if(index>=words.length)
+        {
+            maxScore = Math.max(currentScore,maxScore);
+            return;
+        }
+        
+
+        for(int i=index;i<words.length;i++)
+        {
+            boolean possible = true;
+            String word = words[i];
+            //can we take this word
+            for(char ch : word.toCharArray())
+            {
+                count[ch - 'a']--;
+                if(count[ch - 'a']<0)
+                {
+                    //not possible to take this word
+                    possible = false;
+                }
+                currentScore = currentScore + score[ch - 'a'];
+            }
+            //if possible to take this word
+            if(possible)
+            {
+                maxScore = Math.max(currentScore,maxScore);
+                backtrack(words,count,score,i+1,currentScore);
+            }
+            //backtrack
+            for(char ch : word.toCharArray())
+            {
+                count[ch - 'a']++;
+                currentScore = currentScore - score[ch - 'a'];
+            }
+        }
+    }
+}

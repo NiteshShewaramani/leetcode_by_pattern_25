@@ -1,0 +1,33 @@
+class Solution {
+    int maxrow=0,maxcol=0;
+    public int uniquePaths(int m, int n) {
+        maxrow=m;
+        maxcol=n;
+        int dp[][] = new int[m][n];
+        
+        for (int[] row : dp)
+            Arrays.fill(row, -1);
+        
+        return functionTraverse(0,0,dp);
+        
+    }
+    private int functionTraverse(int m,int n,int dp[][])
+    {
+        
+        if(m >= maxrow || n >= maxcol)
+        {
+            return 0;
+
+        }         
+        else if(m == maxrow-1 && n == maxcol-1)
+         return 1;
+        else if(dp[m][n]!=-1)
+        return dp[m][n];
+
+
+
+        dp[m][n] = functionTraverse(m+1,n,dp) + functionTraverse(m,n+1,dp);
+
+        return dp[m][n];
+    }
+}

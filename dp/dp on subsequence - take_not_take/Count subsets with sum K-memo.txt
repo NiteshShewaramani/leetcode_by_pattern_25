@@ -1,0 +1,34 @@
+
+
+class Solution {
+    //TC O(target x n)
+    //SC O(target x n)
+
+    private static final int MODULO = 1000000007;
+    public int perfectSum(int[] arr, int target) {
+        Integer memo[][] = new Integer[target+1][arr.length];
+      return recursion(arr,target,arr.length-1,memo);
+    }
+
+    private int recursion(int[] arr , int target , int index,Integer memo[][])
+    {
+        if(target==0)
+            return 1;
+
+        if(index==0)
+            return target == arr[0] ? 1 : 0;
+
+
+        if(memo[target][index]!=null)
+            return memo[target][index];
+
+        int notPick = recursion(arr,target,index-1,memo);
+        int pick = 0;
+
+        if(target>=arr[index])
+            pick = recursion(arr,target-arr[index],index-1,memo);
+
+        return memo[target][index] = (pick + notPick)% MODULO;            
+
+    }
+}

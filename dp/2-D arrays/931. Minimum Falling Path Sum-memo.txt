@@ -1,0 +1,40 @@
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int min = Integer.MAX_VALUE;
+        int rl = matrix.length;
+        int cl = matrix[0].length;
+
+        Integer dp[][] = new Integer[rl][cl];
+
+        for(int i=0;i<cl;i++)
+        {
+            min=Math.min(min,recursion(0,i,matrix,dp));
+        }
+
+        return min;
+
+
+    }
+
+    public int recursion(int rIndex,int cIndex,int[][] matrix,Integer dp[][])
+    {
+        int rl = matrix.length;
+        int cl = matrix[0].length;
+
+        if(cIndex >=cl || cIndex<0)
+        {
+            //return a max number
+            return 1_000_000_007;
+        }
+        if(rIndex == rl-1)
+        return matrix[rIndex][cIndex];
+
+        if(dp[rIndex][cIndex]!=null)
+        return dp[rIndex][cIndex];
+
+        dp[rIndex][cIndex] = matrix[rIndex][cIndex] + 
+        Math.min(recursion(rIndex+1,cIndex+1,matrix,dp) , Math.min(recursion(rIndex+1,cIndex,matrix,dp) ,recursion(rIndex+1,cIndex-1,matrix,dp) ));
+
+        return dp[rIndex][cIndex];
+    }
+}

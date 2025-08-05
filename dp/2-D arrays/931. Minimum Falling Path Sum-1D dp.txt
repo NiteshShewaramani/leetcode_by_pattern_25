@@ -1,0 +1,49 @@
+class Solution {
+    //1 d DP 
+    //TC O(n x m)
+    //SC O(m)
+    public int minFallingPathSum(int[][] matrix) {
+        int min = Integer.MAX_VALUE;
+        int rl = matrix.length;
+        int cl = matrix[0].length;
+
+        int dp[] = new int[cl];
+        //initialize dp with first row of matrix
+        for(int col = 0; col < cl;col++)
+        {
+            dp[col] = matrix[0][col];
+        }
+
+        for(int row = 1; row < rl ; row++)
+        {
+            //current row
+            int[] current = new int[cl];
+            for(int col = 0; col < cl;col++)
+            {
+                int value = matrix[row][col];
+                int previousLeft = 1_000_000 , previousRight = 1_000_000;
+                //check previous left
+                if(col>0)
+                previousLeft = dp[col-1];
+
+                //check previous right
+                if(col+1<cl)
+                previousRight = dp[col+1];
+
+                current[col] = value + Math.min( dp[col], Math.min(previousLeft,previousRight));
+            }
+            //copy to dp
+            dp = current;
+        }
+
+        //get minimum value from last row dp
+        for(int col = 0; col < cl;col++)
+        {
+            min=Math.min(min,dp[col]);
+        }
+        return min;
+
+    }
+
+    
+}

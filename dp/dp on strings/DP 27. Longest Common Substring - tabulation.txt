@@ -1,0 +1,39 @@
+class Solution {
+    /**
+    Ezample str 1 = abcd str2 = abzd
+    Tabulation will be
+                a   b   c   d (str1)
+            0   1   2   3   4
+(str)   0   0   0   0   0   0 
+    a   1   0   1   0   0   0
+    b   2   0   0   2   0   0   
+    z   3   0   0   0   0   0
+    d   4   0   0   0   0   1
+
+    2  is max answer
+    TC O(N x M)
+    SC O(N x M)
+    */
+    public int longestCommonSubstr(String str1, String str2) {
+        //we need to use tabulation here 
+
+        int dp[][] = new int[str1.length()+1][str2.length()+1];
+        int max = 0;
+        for(int i=0; i < str1.length() ; i++)
+        {
+            for(int j=0; j < str2.length() ; j++)
+            {
+                //if both are matching
+                if(str1.charAt(i) == str2.charAt(j))
+                {
+                    //dp will be 1 for current match + prev match
+                    dp[i+1][j+1] = 1 + dp[i][j];
+                    max = Math.max(dp[i+1][j+1] , max);
+                }
+
+            }
+        }
+
+        return max;
+    }
+}

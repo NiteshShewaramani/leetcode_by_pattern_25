@@ -1,0 +1,47 @@
+class Solution {
+//TC O(N x amount)
+//SC O(N x amount)
+
+    public int coinChange(int[] coins, int amount) {
+        
+        int dp[][] = new int[coins.length][amount+1];
+
+        for(int row[] : dp) Arrays.fill(row,-1);
+        
+        int value = recursion(coins.length-1,amount,coins,dp);
+
+        if(value>= 1_000_000_07) return -1;
+        
+        return value;
+
+
+    }
+
+    private int recursion(int index, int amount,int coins[],int dp[][])
+    {
+        if(index == 0)
+        {
+            if(amount % coins[0] == 0  )
+            {
+                return amount/coins[0];
+
+            }
+            return 1_000_000_07;
+        }
+
+        if(dp[index][amount]!=-1)
+        return dp[index][amount];
+        
+        int nottake = recursion(index-1,amount,coins,dp);
+        int take = 1_000_000_07;
+
+        if(amount>=coins[index])
+            take =  1 +  recursion(index,amount-coins[index],coins,dp);
+
+            dp[index][amount] = Math.min(take,nottake);
+
+            return dp[index][amount];
+          
+
+    }
+}

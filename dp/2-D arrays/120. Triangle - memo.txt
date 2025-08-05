@@ -1,0 +1,27 @@
+class Solution {
+
+    private int calculateSum(List<List<Integer>> triangle, int level, 
+    int index,int dp[][] ) {
+        if(dp[level][index]!=-1)
+        return dp[level][index];
+        int sum=triangle.get(level).get(index);
+        if (level + 1 < triangle.size()) {
+            sum = sum + Math.min(
+            calculateSum(triangle, level + 1, index,dp),
+            calculateSum(triangle, level + 1, index + 1,dp));
+        }
+        dp[level][index]=sum;
+        return dp[level][index];
+    }
+
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int rows=triangle.size();
+        //getting size of last row which will be our column
+        int columns= triangle.get(rows-1).size();
+        int dp[][] = new int[rows][columns];
+
+        for(int[] row : dp)
+        Arrays.fill(row,-1);
+        return calculateSum(triangle,0,0,dp);
+    }
+}

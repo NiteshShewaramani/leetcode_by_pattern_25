@@ -1,0 +1,38 @@
+class Solution {
+    //TC O(n x m) SC O(m)
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int rows=triangle.size();
+        //getting size of last row which will be our column
+        int columns= triangle.get(rows-1).size();
+        
+        int dp[] = new int[columns];
+        //fill last row of dp
+        for(int col = 0;col<columns;col++)
+        {
+            dp[col] = triangle.get(rows-1).get(col);
+        }
+        //i/o - [[2],[3,4],[6,5,7],[4,1,8,3]]
+        //dp - [4,1,8,3]
+        //start from second last row till 0
+        for(int row = rows-2;row>=0;row--)
+        {
+            int cols = triangle.get(row).size();
+
+            for(int col = 0;col<cols;col++)
+            {
+                int temp = triangle.get(row).get(col) + Math.min(dp[col],dp[col+1]);
+                dp[col] = temp;
+            }
+        }
+        /**
+        i/o - [[2],[3,4],[6,5,7],[4,1,8,3]]
+        dp states - 
+        [4,1,8,3]
+        [7,6,10,3]
+        [9,10,10,3]
+        [11,10,10,3]
+         */
+        return dp[0];
+
+    }
+}

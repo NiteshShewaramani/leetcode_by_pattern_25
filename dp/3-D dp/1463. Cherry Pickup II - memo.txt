@@ -1,0 +1,66 @@
+class Solution {
+    /***
+    TC O(N x M x M)  - Integer[][][] memo dp space
+    SC O(N x M x M)   - space taken by dp , depth is no of rows 
+     */
+    int[][] area;
+    int paths[] = new int[]{-1,0,1};
+    public int cherryPickup(int[][] grid) {
+        area=grid;
+        //row , column for robo1 column for robo2
+        Integer[][][] memo =  new Integer[area.length][area[0].length][area[0].length];
+        return recursion(0,0,area[0].length -1 ,memo);
+        
+    }
+    private int recursion(int currentRow , int robot1idx , int robot2idx , Integer[][][] memo)
+    {
+        //base case for out of boundry
+        if(robot1idx<0 || robot2idx<0 || robot1idx >=area[0].length || robot2idx >=area[0].length || currentRow>= area.length)
+        {
+            //return a large negative value
+            return -1_000_000;
+        }
+
+        //base case we have reached last row
+        if(currentRow == area.length-1)
+        {
+            //if they both are in same cell
+            if(robot1idx==robot2idx)
+                return area[currentRow][robot1idx];
+            else
+            {
+                return area[currentRow][robot2idx] + area[currentRow][robot1idx];
+            }
+        }
+        //check memo
+        if(memo[currentRow][robot1idx][robot2idx]!=null)
+        {
+            return memo[currentRow][robot1idx][robot2idx];
+        }
+        //now explore all paths
+        int currentMax = 0;
+        
+        //robo 1
+        for(int r1 : paths)
+        {
+            //for robot 2
+            for(int r2 : paths)
+            {
+                if(robot1idx==robot2idx)
+                {
+                    //add once same column picked by both
+                    int same = area[currentRow][robot1idx] + recursion(currentRow + 1 ,robot1idx +r1,robot2idx+r2 , memo);
+                    currentMax = Math.max(same,currentMax);
+                }
+                else
+                {
+                    int both = area[currentRow][robot1idx] + area[currentRow][robot2idx]+ recursion(currentRow + 1 ,robot1idx +r1,robot2idx+r2 ,memo);
+                    currentMax = Math.max(currentMax,both);
+                }
+            }
+        }
+        //assign max to memo
+        return memo[currentRow][robot1idx][robot2idx] = currentMax;
+
+    }
+}

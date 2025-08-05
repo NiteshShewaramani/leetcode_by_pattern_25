@@ -1,0 +1,57 @@
+
+class Solution {
+    //TC O(target x n)
+    //SC O(target x n)
+
+    private static final int MODULO = 1000000007;
+    public int countPartitions(int n, int diff, int[] arr) {
+      int totalSum = 0;
+      for(int i : arr)
+      {
+        totalSum = totalSum + i;
+
+      }
+      /* If the total sum minus the difference is negative,
+           or if it is not even, it's not possible to divide 
+           the array into two subsets with the given difference. */
+           
+      if (totalSum - diff < 0) return 0;
+      
+      if ((totalSum - diff) % 2 == 1) return 0;
+
+      int target = (totalSum - diff) / 2;
+      Integer memo[][] = new Integer[target+1][arr.length];
+      return recursion(arr,target,arr.length-1,memo);
+    }
+
+    private int recursion(int[] arr , int target , int index,Integer memo[][])
+    {
+        // Base case: If we are at the first element.
+        if (index == 0) {
+            /* If target is 0 and the element is also 0, there 
+            are 2 ways to achieve this (include or exclude). */
+            if (target == 0 && arr[0] == 0)
+                return 2;
+
+            /* If target is 0 or the element is equal to 
+            target, there is 1 way to achieve this. */
+            if (target == 0 || target == arr[0])
+                return 1;
+
+            return 0;
+        }
+
+
+        if(memo[target][index]!=null)
+            return memo[target][index];
+
+        int notPick = recursion(arr,target,index-1,memo);
+        int pick = 0;
+
+        if(target>=arr[index])
+            pick = recursion(arr,target-arr[index],index-1,memo);
+
+        return memo[target][index] = (pick + notPick)% MODULO;            
+
+    }
+}

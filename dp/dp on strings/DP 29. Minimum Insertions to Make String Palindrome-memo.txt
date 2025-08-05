@@ -1,0 +1,42 @@
+class Solution {
+    /**
+    Logic - instead of getting count of longest common subsequence 
+    we will get the minimum count of characters that are not part of that subsequence.
+    Rather than comparing a string with its reverse we will use 2 pointers to compare the same string.
+
+    TC O(n x n)
+    SC O(n x n)
+    **/
+    public int minInsertion(String s) {
+        int n=s.length();
+        int dp[][]=new int[n][n];
+        for(int row[]:dp)
+        {
+            Arrays.fill(row,-1);
+        }
+        int k = calculateCommonSubsequence(s.toCharArray(),0,n-1,dp);
+        return k;
+        
+    }
+
+     private int calculateCommonSubsequence(char[] s,int first,int last,int dp[][])
+    {
+        if(first>=last)
+        return 0;
+
+        if(dp[first][last]!=-1)
+        return dp[first][last];
+
+        if(s[first]==s[last])
+        {
+            dp[first][last] = calculateCommonSubsequence(s,first+1,last-1,dp);
+        }
+        else
+        {
+            int moveF =1+ calculateCommonSubsequence(s,first+1,last,dp);
+            int moveLast =1+ calculateCommonSubsequence(s,first,last-1,dp);
+            dp[first][last] =Math.min(moveF,moveLast);
+        }
+        return dp[first][last];
+    }
+}

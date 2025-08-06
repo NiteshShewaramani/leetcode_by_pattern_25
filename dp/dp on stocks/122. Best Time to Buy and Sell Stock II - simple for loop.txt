@@ -1,0 +1,27 @@
+class Solution {
+    /**
+    TC O(N)
+    SC O(1)
+     */
+    public int maxProfit(int[] prices) {
+        int minBuy = prices[0];
+        int totalProfit=0;
+
+        for(int i=1;i<prices.length;i++)
+        {
+            if(prices[i]>minBuy)
+            {
+                totalProfit = totalProfit + prices[i]-minBuy; 
+                //after sell we need to change min value again bcaz we sold the stock 
+                //basically we can buy the stock on the same day
+                minBuy=prices[i];
+            }
+            else
+            {
+                // if we can't sell try to buy
+                minBuy=prices[i];
+            }
+        }
+        return totalProfit;
+    }
+}

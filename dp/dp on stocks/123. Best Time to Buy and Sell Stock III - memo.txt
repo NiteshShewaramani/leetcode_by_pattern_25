@@ -1,0 +1,38 @@
+class Solution {
+    /**
+	TC O(N x 4) 
+	SC O(N x 4) 
+    instead of buy sell and capcity we are using 
+    transaction  0 = buy 1 = sell  2= buy  3= sell  
+    even is buy and  odd is sell
+    limit is 4 bcaz we can do atmost 2 transactions
+     */
+    public int functionMemo(int[] prices, int ind, int trans,int dp[][]) {
+
+        if (ind >= prices.length || trans == 4)
+            return 0;
+
+        if(dp[ind][trans] !=-1)
+        return dp[ind][trans];
+
+        if (trans%2==0) {
+            // we have 2 choices here either we buy or not
+            int buy = -prices[ind] + functionMemo(prices, ind + 1, trans+1,dp);
+            int notBuy = 0 + functionMemo(prices, ind + 1, trans,dp);
+            dp[ind][trans] = Math.max(buy, notBuy);
+        } else {
+            // we have 2 choices here either we sell or not
+            int sell = prices[ind] + functionMemo(prices, ind + 1, trans+1,dp);
+            int notsell = 0 + functionMemo(prices, ind + 1, trans,dp);
+            dp[ind][trans] = Math.max(sell, notsell);
+        }
+        return dp[ind][trans];
+    }
+
+    public int maxProfit(int[] prices) {
+        int dp[][] = new int[prices.length + 1][4];
+        for(int row[]:dp)
+        Arrays.fill(row,-1);
+        return functionMemo(prices, 0,0,dp);
+    }
+}

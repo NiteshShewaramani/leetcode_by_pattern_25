@@ -1,0 +1,41 @@
+class Solution {
+    /**
+    TC O(N x 2)
+    SC O(N x 2)
+    buy == 1
+    sell == 0 
+     */
+    public int maxProfit(int[] prices) {
+        int dp[][] = new int[prices.length + 1][2];
+        for(int row[]:dp)
+        Arrays.fill(row,-1);
+        //intitial state 1 allowed to buy
+        return functionMemo(prices, 0 , 1 , dp);
+    }
+
+    public int functionMemo(int[] prices, int ind, int buy,int dp[][]) {
+        //base case
+        if (ind >= prices.length )
+            return 0;
+
+        if(dp[ind][buy] !=-1)
+        return dp[ind][buy];
+
+        if (buy==1) {
+            // we have 2 choices here either we buy or not
+            int buyingNow = -prices[ind] + functionMemo(prices, ind + 1, 0 ,dp );
+            // 1 means still allowed to buy
+            int notBuy = 0 + functionMemo(prices, ind + 1, 1 ,dp );
+            dp[ind][buy] = Math.max(buyingNow, notBuy);
+        } else {
+            // we have 2 choices here either we sell or not
+            //ind +2 instead of 1 bcaz of colldown condition
+            int sell = prices[ind] + functionMemo(prices, ind + 2, 1,dp) ;
+            //0 means not sold yet loogin further
+            int notsell = 0 + functionMemo(prices, ind + 1, 0, dp );
+            dp[ind][buy] = Math.max(sell, notsell);
+        }
+        return dp[ind][buy];
+    }
+    
+}

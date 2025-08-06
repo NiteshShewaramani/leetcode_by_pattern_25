@@ -1,0 +1,45 @@
+class Solution {
+    /**
+    TC O(N x M)
+    SC O(N x M) + stack space
+     */
+    public int minDistance(String word1, String word2) {
+  
+        Integer dp[][] = new Integer[word1.length()][word2.length()];
+        return recursion(word1,word2,word1.length()-1,word2.length()-1 , dp);
+    }
+
+    public int recursion(String word1,String word2,int p1, int p2 , Integer dp[][])
+    {
+        //base case
+        //we have exhausted string2 that means we need 
+        //to delete remaining from string1 , we are doing +1 bcaz index starts from 0
+        if(p1<0)
+        return p2+1;
+        //we have exhausted string1 that means we need 
+        //to add charactes to string1 to make it string2 ,we are doing +1 bcaz index starts from 0
+        if(p2<0)
+        return p1+1;
+        
+        if(dp[p1][p2] != null)
+        {
+            return dp[p1][p2];
+        }
+        
+        //traverse all possibilities
+        if(word1.charAt(p1)==word2.charAt(p2))
+        {
+            return dp[p1][p2] = recursion(word1,word2,p1-1,p2-1, dp);
+        }
+        else
+        {
+            int insert  = 1 + recursion(word1,word2,p1,p2-1, dp);
+            int replace = 1 + recursion(word1,word2,p1-1,p2-1, dp);
+            int delete  = 1 + recursion(word1,word2,p1-1,p2, dp);
+
+            //return minimum of all
+            return dp[p1][p2]  = Math.min( delete ,  Math.min(insert,replace));
+
+        }
+    }
+}

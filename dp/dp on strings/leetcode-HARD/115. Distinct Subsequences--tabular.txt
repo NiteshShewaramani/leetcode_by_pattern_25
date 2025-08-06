@@ -1,0 +1,71 @@
+class Solution {
+
+    /**
+    TC O(N x M)
+    SC O(N x M)
+     */
+    public int numDistinct(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        
+        int[][] dp = new int[n + 1][m + 1];
+        
+        /* Initialize the first column: empty string t can
+        be matched with any non-empty s in one way*/
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
+        }
+
+        /* Initialize the first row:
+        s can't match any non-empty t*/
+        for (int i = 1; i <= m; i++) {
+            dp[0][i] = 0;
+        }
+        /**
+        example  s = "axbxax", t = "axa"
+        dp after base case
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+        [  1   0   0   0   ]
+         */
+
+        
+        // Fill in the DP array
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    /* If the characters match, consider two options:
+                    either leave one character in s and t or leave 
+                    one character in s and continue matching t*/
+                    dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j]);
+                } else {
+                    /* If the characters don't match, we can
+                    only leave the current character in s*/
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        
+        /**
+        example  s = "axbxax", t = "axa" dp-
+        [  1   0   0   0   ]
+        [  1   1   0   0   ]
+        [  1   1   1   0   ]
+        [  1   1   1   0   ]
+        [  1   1   2   0   ]
+        [  1   2   2   2   ]
+        [  1   2   4   2   ]
+         */
+
+         /* The value at dp[n][m] contains
+        the count of distinct subsequences*/
+        return dp[n][m];
+
+    }
+
+    
+}

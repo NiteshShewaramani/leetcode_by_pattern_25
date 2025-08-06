@@ -1,0 +1,49 @@
+class Solution {
+    String first;
+    String second;
+    Integer dp[][];
+    /**
+    TC O(N x M)
+    SC O(N x M)
+     */
+    public int numDistinct(String s, String t) {
+        first = s;
+        second = t;
+        dp = new Integer[s.length()][t.length()]; 
+        return recursion(0,0);
+    }
+
+    private int recursion(int p1, int p2)
+    {
+        //base case reached end of string 2 found it
+        if(p2>=second.length())
+        {
+            return 1;
+        }
+        //base case reached end of string 1 but string 2 is still pending so not found 
+        if(p1>=first.length())
+        {
+            return 0;
+        }
+        if(dp[p1][p2]!=null)
+        {
+            return dp[p1][p2];
+        }
+
+        if(first.charAt(p1) ==  second.charAt(p2))
+        {
+            int pick = recursion(p1+1,p2+1);
+            //need to look further if another character also matches with this 
+            //so try not pick as well
+            int notpick = recursion(p1+1,p2);
+            return dp[p1][p2] = pick + notpick;
+        }
+        else
+        {
+            //move string 1 till we match
+            int notpick = recursion(p1+1,p2);
+            return dp[p1][p2] = notpick;
+        }    
+
+    }
+}

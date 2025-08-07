@@ -1,0 +1,54 @@
+class Solution {
+    //TC O (N x N) x length of string + nlogn
+    //SC O(N)
+    public int longestStrChain(String[] words) {
+        int n = words.length;
+
+        int dp[]=new int[n];
+        //each string itself is a chain so assigning it to 1
+        Arrays.fill(dp,1);
+
+        int max=1;
+        //sorting by length
+        Arrays.sort(words, (a, b)-> a.length() - b.length());
+        for(int i=1;i<n;i++)
+        {
+            for(int prev=0;prev<i;prev++)
+            {
+                if(checkCondition(words[prev],words[i]) && dp[prev]+1>dp[i])
+                {
+                    dp[i]=dp[prev]+1;
+                }
+            }
+            if(dp[i]>max)
+            max=dp[i];
+        }
+        return max;
+    }
+    private boolean checkCondition(String prev,String current)
+    {
+
+        //we can only add 1 character if there difference in length is more than 1
+        //return false
+        if(current.length()-prev.length()!=1)
+        {
+            return false;
+        }
+        //now we know that they have only 1 difference in length 
+        //check if they have equal characs
+        
+        int first = 0;
+        int second = 0;
+
+        while (first < current.length()) {
+            if (second < prev.length() && current.charAt(first) == prev.charAt(second)) {
+                first++;
+                second++;
+            } else {
+                first++;
+            }
+        }
+
+        return first == current.length() && second == prev.length();
+    }
+}

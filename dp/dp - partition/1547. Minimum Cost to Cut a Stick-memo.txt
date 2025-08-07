@@ -1,0 +1,45 @@
+class Solution {
+    //TC O(N x N x M)
+    //SC O(N x N)  + stack space
+    public int function(int i,int j,List<Integer> list,int dp[][])
+    {
+        if(i>j)
+        return 0;
+
+        if(dp[i][j]!=-1)
+        return dp[i][j];
+
+        int mini=Integer.MAX_VALUE;
+
+        //recursion covering all the combinations
+        for(int k=i;k<=j;k++)
+        {
+            //we are making cut at k
+            int ans = (list.get(j+1)-list.get(i-1)) 
+            +  function(i,k-1,list,dp) 
+            +  function(k+1,j,list,dp);
+
+            mini=Math.min(mini,ans);
+
+        }
+        return dp[i][j]=mini;
+
+    }
+    public int minCost(int n, int[] cuts) {
+        ArrayList<Integer> list =  
+            new ArrayList<Integer>(); 
+            list.add(0);
+            list.add(n);
+            for(int v : cuts)
+            {
+                list.add(v);
+            }
+        Collections.sort(list);
+        int dp[][] = new int[cuts.length+1][cuts.length+1];
+        for(int row[]:dp)
+        {
+            Arrays.fill(row,-1);
+        }
+        return function(1,cuts.length,list,dp);
+    }
+}

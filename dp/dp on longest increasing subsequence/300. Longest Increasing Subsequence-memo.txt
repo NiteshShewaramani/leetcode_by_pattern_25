@@ -1,0 +1,34 @@
+class Solution {
+    //TC O(N x N)
+    //SC O(N x N) +  O(N) stack space
+    public int function(int[] nums,int ind,int prevInd,int dp[][] )
+    {
+        if(ind == nums.length)
+            return 0;
+
+        if(dp[ind][prevInd+1]!=-1)
+        {
+            return dp[ind][prevInd+1];
+        }
+
+        int notTake = 0 + function(nums,ind+1,prevInd,dp);
+        int take=0;
+        //only take when currrent index is greater then previous
+        if(prevInd == -1 || nums[ind] > nums[prevInd] )
+        {
+            take = 1 + function(nums,ind+1,ind,dp);
+        }
+        dp[ind][prevInd+1] = Math.max(take,notTake);
+        return dp[ind][prevInd+1];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int dp[][] =new int[nums.length][nums.length+1];
+        //prev index starts from -1 till n-1
+
+        for(int row[]:dp)
+        Arrays.fill(row,-1);
+        
+        return function(nums,0,-1,dp);
+    }
+}

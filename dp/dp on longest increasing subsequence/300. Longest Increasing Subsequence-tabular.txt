@@ -1,0 +1,28 @@
+class Solution {
+    //TC O(N x N)
+    //SC O(N x N)
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int dp[][] =new int[nums.length+1][nums.length+1];
+        //prev index starts from -1 till n-1
+        
+        //base case was 0 since array is initialized as 0 by default no need to assign anything
+        for(int index = n-1 ; index >= 0 ; index--)
+        {
+            //previous index will start before current index
+            for(int prevInd = index - 1 ; prevInd >=-1 ; prevInd--)
+            {
+                //prevInd needs to be always + 1
+                int nottake = dp[index+1][prevInd+1];
+                int take=0;
+                //only take when currrent index is greater then previous
+                if(prevInd == -1 || nums[index] > nums[prevInd] )
+                {
+                    take = 1 + dp[index+1][index+1];
+                }
+                dp[index][prevInd+1] = Math.max(take,nottake);
+            }
+        }
+        return dp[0][0];
+    }
+}

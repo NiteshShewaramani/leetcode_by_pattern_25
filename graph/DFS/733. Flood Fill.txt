@@ -1,0 +1,29 @@
+class Solution {
+    /**
+    TC O (N x M)
+    SC O (N x M)(depth of stck is n x m)
+     */
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int color = image[sr][sc];
+        
+        if (color != newColor) 
+            dfs(image, sr, sc, color, newColor);
+        
+        return image;
+    }
+    public void dfs(int[][] image, int r, int c, int prevcolor, int newColor) {
+        //if pixel has previous color replace it with new color 
+        //and check its neighbour
+        if (image[r][c] == prevcolor) {
+            image[r][c] = newColor;
+            if (r >= 1) 
+                dfs(image, r-1, c, prevcolor, newColor);
+            if (c >= 1) 
+                dfs(image, r, c-1, prevcolor, newColor);
+            if (r+1 < image.length) 
+                dfs(image, r+1, c, prevcolor, newColor);
+            if (c+1 < image[0].length) 
+                dfs(image, r, c+1, prevcolor, newColor);
+        }
+    }
+}

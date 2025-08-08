@@ -1,0 +1,27 @@
+public class Solution {
+    /**
+    TC O(N )(initial for loop) + O(V + 2E) (time taken for dfs call) ~~ near about O(N)
+    SC O(N) visited array + O(N) stack space
+     */
+    public int findCircleNum(int[][] M) {
+        int[] visited = new int[M.length];
+        int count = 0;
+        for (int i = 0; i < M.length; i++) {
+            if (visited[i] == 0) {
+                dfs(M, visited, i);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void dfs(int[][] M, int[] visited, int i) {
+        for (int j = 0; j < M.length; j++) {
+            //we already have adj matrix check all connected for i row
+            if (M[i][j] == 1 && visited[j] == 0) {
+                visited[j] = 1;
+                dfs(M, visited, j);
+            }
+        }
+    }
+}

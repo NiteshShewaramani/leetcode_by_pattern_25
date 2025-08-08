@@ -1,0 +1,90 @@
+class Solution {
+    char[][] gridG;
+    int rows;
+    int cols;
+    int[][] visited;
+    /**
+    TC O(N x M) bcaz of visited array we will only visit each element once
+    SC O(N x M)
+     */
+    public boolean containsCycle(char[][] grid) {
+        rows = grid.length;
+        cols = grid[0].length;
+        visited = new int[rows][cols];
+        gridG = grid;
+
+        for(int i = 0 ;i<rows;i++)
+        {
+            for(int j = 0;j<cols;j++)
+            {
+                if(visited[i][j] == 0)
+                {
+                    if(hasCycle(i,j,i,j,gridG[i][j],'-'))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasCycle(int x , int y , int px , int py,char c,char lastD)
+    {
+        //out of bounds
+        if(x<0 || y<0 || x>=rows || y>=cols)
+        {
+            return false;
+        }
+        //can't visit this cell
+        if(gridG[x][y] != c)
+        {
+            return false;
+        }
+
+        //already visited but not parent so return true we found a cycle
+        if(visited[x][y] == 1 &&  (x!=px || y!=py))
+        {
+            //System.out.println("x is " + x + " y is " + y + " px is " + px + " py is " + py);
+            return true;
+        }
+        //already visited
+        if(visited[x][y] == 1)
+        {
+            return false;
+        }
+            
+        //System.out.println("x is " + x + " y is " + y + "  " + gridG[x][y]);
+        // now it means it is equal so mark as visited
+        visited[x][y] = 1;
+        //now explore all 4 directions
+
+        //go right
+        if(lastD!='L' && hasCycle(x,y+1,x,y,c,'R'))
+        {
+            return true;
+        }
+            
+        //go left but make sure we don't go back where we came from
+        if(lastD!='R' && hasCycle(x,y-1,x,y,c,'L'))
+        {
+            return true;
+        }
+            
+
+        //go down  but make sure we don't go back where we came from
+        if(lastD!='U' && hasCycle(x+1,y,x,y,c,'D'))
+        {
+            return true;
+        }
+                
+
+        //go up but make sure we don't go back where we came from
+        if(lastD!='D' && hasCycle(x-1,y,x,y,c,'U'))
+        {
+            return true;
+        }
+            
+
+
+        return false;
+    }
+}

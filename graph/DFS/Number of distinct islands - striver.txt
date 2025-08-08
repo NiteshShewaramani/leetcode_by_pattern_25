@@ -1,0 +1,87 @@
+class Solution {
+    /**
+    Time Complexity: O(N*M*log(N*M)) 
+    (where N and M are dimensions of grid)
+In the worst case, the DFS call will be made for N*M cells taking O(N*M) time.
+In worst case, the set will store O(N*M) entries that takes O(N*M*log(N*M)) time.
+log(N*M) is taken by set to save
+Space Complexity: O(N*M)
+The visited array takes O(N*M) space and the set will store a maximum of O(N*M) cells.
+    **/
+	private int[] delRow = {-1, 0, 1, 0};
+    	private int[] delCol = {0, -1, 0, 1};
+
+    public int countDistinctIslands(int[][] grid) {
+        // Get the dimensions of grid
+        int n = grid.length;
+        int m = grid[0].length;
+
+        // 2-D Visited array
+        boolean[][] visited = new boolean[n][m];
+
+        // Set to store traversal of unique islands
+        Set<List<String>> st = new HashSet<>();
+
+        // Traverse the grid
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                /* Start DFS traversal if an 
+                unvisited land cell is found */
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    // Mark the cell as visited
+                    visited[i][j] = true;
+
+                    // To store the path of cells
+                    List<String> path = new ArrayList<>();
+
+                    // Start DFS traversal from the cell
+                    dfs(i, j, grid, visited, path, i, j);
+
+                    // Add the path of explored island to the set
+                    st.add(path);
+                }
+            }
+        }
+
+        return st.size();
+      
+    }
+
+    /* Helper function to check if a 
+    cell is within boundaries */
+    private boolean isValid(int i, int j, int n, int m) {
+        // Return false if cell is invalid
+        if (i < 0 || i >= n) return false;
+        if (j < 0 || j >= m) return false;
+        // Return true if cell is valid
+        return true;
+    }
+
+    // Function for DFS traversal of island
+    private void dfs(int row, int col, int[][] grid, boolean[][] visited,
+                     List<String> path, int baseRow, int baseCol) {
+        // Get the dimensions of grid
+        int n = grid.length;
+        int m = grid[0].length;
+
+        /* Add relative position "row,col" of current 
+        cell with respect to the base cell */
+        path.add((row - baseRow) + "," + (col - baseCol));
+
+        // Traverse the 4 neighbors
+        for (int i = 0; i < 4; i++) {
+            // Get coordinates of new cell
+            int nRow = row + delRow[i];
+            int nCol = col + delCol[i];
+
+            // Traverse unvisited, valid, land cell
+            if (isValid(nRow, nCol, n, m) && grid[nRow][nCol] == 1 && !visited[nRow][nCol]) {
+                // Mark the cell as visited
+                visited[nRow][nCol] = true;
+
+                // Recursively call DFS for the new cell
+                dfs(nRow, nCol, grid, visited, path, baseRow, baseCol);
+            }
+        }
+    }
+}

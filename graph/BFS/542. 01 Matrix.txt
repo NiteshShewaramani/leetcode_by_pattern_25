@@ -1,0 +1,64 @@
+/*
+    Algo:
+     -> make a queue of Pair class
+     ->put the pair(i,j,0) in the ans matrix 'ans[][]' where ever the '0' present in the 'mat' elsewhere put '-1'
+     ->make dir[][] mat to move in top, left, bottom, right in the 'mat'
+     ->travel on 'q' until its size doesn't be 0
+       ->if 'ans[ni][nj]' is -1 update the cell in 'ans[][]' with increasing the dist by 1 and put it's new Pair in q
+     TC O(N x N) for loop + O(N x N x 4) Bfs
+     SC O(N x N)2d array + O(N x N)queue
+*/
+
+class Solution {
+    static class Pair {
+        int i;
+        int j;
+        int dist;
+        
+        Pair() {
+        }
+        Pair(int i, int j, int dist) {
+            this.i = i;
+            this.j = j;
+            this.dist = dist;
+        }
+    }
+    public int[][] updateMatrix(int[][] mat) {
+        ArrayDeque<Pair> q = new ArrayDeque<>();
+        
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] ans = new int[m][n];
+        
+        //N x N
+        for(int i = 0; i<m; i++) {
+            for(int j = 0; j<n; j++) {
+                if(mat[i][j] == 0) {
+                    q.add(new Pair(i, j, 0));
+                }
+                else {
+                    //make -1 as unvisited
+                    ans[i][j] = -1;
+                }
+            }
+        }
+        
+        int[][]dir = { {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
+
+        while(q.size() > 0) {
+            Pair rem = q.remove();
+            
+            for(int k = 0; k<4; k++) {
+                int ni = rem.i + dir[k][0];
+                int nj = rem.j + dir[k][1];
+                
+                if(ni>=0 && ni<m && nj>=0 && nj<n && ans[ni][nj] == -1) {
+                    q.add(new Pair(ni,nj,rem.dist + 1));
+                    ans[ni][nj] = rem.dist + 1;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}

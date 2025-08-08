@@ -1,0 +1,91 @@
+class Solution {
+    /**
+    Mark all connected to boundry as 0
+    TC O(N x M) + O(N x M x 4)
+    SC O(N x M x 4) dfs 
+     */
+    int[][] gridG;
+    int rows;
+    int cols;
+    public int numEnclaves(int[][] grid) {
+        gridG = grid;
+        rows = grid.length;
+        cols = grid[0].length;
+
+        //traverse 1st row
+        for(int c= 0 ; c < cols ; c++)
+        {
+            if(gridG[0][c] == 1)
+            {
+                //do dfs
+                dfs(0,c);
+            }
+
+        }
+
+        //traverse last row
+        for(int c= 0 ; c < cols ; c++)
+        {
+            if(gridG[rows-1][c] == 1)
+            {
+                //do dfs
+                dfs(rows-1,c);
+            }
+
+        }
+
+         //traverse 1st column row
+        for(int c = 1 ; c < rows-1 ; c++)
+        {
+            if(gridG[c][0] == 1)
+            {
+                //do dfs
+                dfs(c,0);
+            }
+
+        }
+
+        //traverse last column row
+        for(int c = 1 ; c < rows-1 ; c++)
+        {
+            if(gridG[c][cols-1] == 1)
+            {
+                //do dfs
+                dfs(c, cols-1);
+            }
+        }
+        int count  = 0;
+        for(int i = 0 ;i < rows ; i++)
+        {
+            for(int c= 0 ; c < cols ; c++)
+            {
+                if(gridG[i][c] == 1)
+                {
+                    ++count;
+                }
+            }
+        }
+
+        return count;
+        
+    }
+
+    private void dfs(int i,int j)
+    {
+        if(i<0 || j<0 || i>= rows || j>=cols)
+            return;
+        
+        //already visited
+        if(gridG[i][j] == 0)
+            return;
+        //we only need to check  1 which are not visited
+        gridG[i][j] = 0;
+        //traverse all directions
+        dfs(i+1,j);
+        dfs(i-1,j);
+        dfs(i,j+1);
+        dfs(i,j-1);
+
+    }
+
+}

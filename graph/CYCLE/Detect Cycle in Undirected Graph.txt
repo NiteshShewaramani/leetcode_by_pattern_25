@@ -1,0 +1,49 @@
+class Solution {
+    /**
+    Time Complexity: O(V + E)
+(where V is the number of nodes and E is the number of edges in the graph)
+Traversing the complete graph overall which taken O(V+E) time.
+
+Space Complexity: O(V)
+Visited array takes O(V) space and in the worst case recursion stack will store O(V) calls taking O(V) space.
+    **/
+    public boolean isCycle(int V, List<Integer>[] adj) {
+        int visited[] = new int[V];
+
+        for(int i = 0 ; i < V; i++)
+        {
+            if(visited[i] == 0)
+            {
+                visited[i] = 1;
+                if( dfs(i , adj , visited,  i) )
+                    return true;
+
+            }
+        }
+        return false;
+    }
+
+    public boolean dfs(int V, List<Integer>[] adj,int visited[],int parent)
+    {
+        List<Integer> list = adj[V];
+        for(int currentNode : list)
+        {
+            if(visited[currentNode] == 0)
+            {
+                visited[currentNode]=1;
+                if( dfs(currentNode , adj , visited,  V) )
+                    return true;
+                
+            } //found a visited node which is not parent
+            else if(visited[currentNode] == 1 && currentNode != parent)
+            {
+                //found cycle
+                return true;
+            }
+
+        }
+        return false;
+
+    }
+
+}

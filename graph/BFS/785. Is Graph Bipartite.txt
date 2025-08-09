@@ -1,0 +1,63 @@
+class Solution {
+    /**
+    TC - O(V x E) taken by bfs
+    SC - O(V x E) queue + adjencyList + colors
+     */
+
+    public boolean isBipartite(int[][] graph) {
+        // no of rows in a graph is no of vertices
+        int vertices = graph.length;
+        List<List<Integer>> adjencyList = new ArrayList<>();
+
+        // initializing the adjacency list
+        for (int i = 0; i <= vertices; i++) {
+            adjencyList.add(new ArrayList());
+        }
+        // colors array to mark color
+        // 1 = green
+        // 2 = yellow
+        // 0 = un marked
+        int colors[] = new int[vertices];
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < graph[i].length; j++) {
+                adjencyList.get(i).add(graph[i][j]);
+            }
+        }
+        // this will only contain the vertices
+        Queue<Integer> queue = new LinkedList<>();
+        for (int k = 0; k < vertices; k++) {
+            if (colors[k] == 0 && adjencyList.get(k).size()>0) {
+                queue.add(k);
+                // colouring new nodes as green in queue
+                colors[k] = 1;
+                boolean ans = bfs(queue, adjencyList, colors);
+                if (!ans)
+                    return ans;
+            }
+        }
+        return true;
+
+    }
+
+    private boolean bfs(Queue<Integer> queue, List<List<Integer>> adjencyList, int colors[]) {
+        while (!queue.isEmpty()) {
+            Integer verticeFirst = queue.poll();
+            List<Integer> path = adjencyList.get(verticeFirst);
+            // need to color them 2
+            for (Integer v : path) {
+                //if both the neighbours are of same color return false;
+                if (colors[v] == colors[verticeFirst])
+                    return false;
+                else if (colors[v] == 0) {
+                    if(colors[verticeFirst]==1)
+                    colors[v] = 2;
+                    else
+                    colors[v] = 1;
+                    queue.add(v);
+                }
+            }
+        }
+        // if we able to color all neighbour nodes with different color
+        return true;
+    }
+}

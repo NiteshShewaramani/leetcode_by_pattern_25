@@ -1,0 +1,55 @@
+class Solution {
+    /**
+    Time Complexity: O(V+E) (where V and E represent the number of nodes and edges in the graph)
+    A simple DFS traversal takes O(V+E) time.
+    Space Complexity: O(V)
+    The visited array and Path Visited array take O(V) space each and the recursion stack space during DFS traversal will be O(V).
+    */
+    public boolean isCyclic(int N, List<List<Integer>> adj) {
+        int visited[] = new int[N];
+        int pathvisited[] = new int[N];
+        for(int i=0;i<N;i++)
+        {
+            if(visited[i]==0)
+            {
+                visited[i] = 1;
+                pathvisited[i] = 1;
+                if(dfs(adj,visited,pathvisited,i))
+                    return true;
+                pathvisited[i] = 0;
+            }
+        }
+        return false;
+
+      
+    }
+
+    public boolean dfs(List<List<Integer>> adj,int visited[],int pathvisited[],int current)
+    {
+        
+        for(int node : adj.get(current))
+        {
+            if(visited[node] == 1)
+            {
+                //if node is visited and path visited means a cycle
+                if(pathvisited[node] == 1)
+                {
+                    return true;
+                }
+
+            } 
+            else
+            {
+                visited[node] = 1;
+                pathvisited[node] = 1;
+                if(dfs(adj,visited,pathvisited,node))
+                    return true;
+                //backtrack
+                pathvisited[node] = 0;
+
+            }
+        }
+        return false;
+
+    }
+}

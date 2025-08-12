@@ -1,0 +1,110 @@
+class Solution {
+    /**
+    Time Complexity: O(N+M)
+Topological Sorting takes O(N+M) time.
+To relax all the vertices, each node and its adjacent nodes are traversed taking O(M) time.
+Space Complexity: O(N+M)
+    */
+    // Pair implementation
+    static class Pair {
+        int first, second;
+
+        Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+    
+    private void topoSort(int node, List<List<Pair>> adj,
+                          boolean[] vis, Stack<Integer> st) {
+        // Mark the node as visited 
+        vis[node] = true;
+
+        // Traverse all the neighbors
+        for (Pair it : adj.get(node)) {
+
+            // Get the node
+            int v = it.first;
+
+            // If not visited, recursively perform DFS
+            if (!vis[v]) {
+                topoSort(v, adj, vis, st);
+            }
+        }
+
+        /* Add the current node to stack 
+        once all the nodes connected to it 
+        have been processed */
+        st.push(node);
+    }
+
+  public int[] shortestPath(int N, int M, int[][] edges) {
+     // To store the graph
+        List<List<Pair>> adj = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Add edges to the graph
+        for (int i = 0; i < M; i++) {
+            int u = edges[i][0]; // node 1
+            int v = edges[i][1]; // node 2
+            int wt = edges[i][2]; // edge weight
+
+            // Add the weighted edge 
+            adj.get(u).add(new Pair(v, wt));
+        }
+
+        // Visited array
+        boolean[] vis = new boolean[N];
+
+        /* Stack to facilitate topological 
+        sorting using DFS traversal */
+        Stack<Integer> st = new Stack<>();
+
+        // Get the topological ordering
+        for (int i = 0; i < N; i++) {
+            if (!vis[i]) {
+                topoSort(i, adj, vis, st);
+            }
+        }
+
+        // Distance array to store the shortest paths
+        int[] dist = new int[N];
+        Arrays.fill(dist, (int)1e9);
+
+        // Distance of source node to itself is zero
+        dist[0] = 0;
+
+        // Until the stack is not empty
+        while (!st.isEmpty()) {
+
+            // Get the node from top of stack
+            int node = st.pop();
+
+            // Update the distances of adjacent nodes
+            for (Pair it : adj.get(node)) {
+                int v = it.first; // adjacent node
+                int wt = it.second; // edge weight
+
+                /* Relaxing the edge, i.e., if a 
+                shorter path is found, update its
+                distance to new shorter distance */
+                if (dist[node] + wt < dist[v]) {
+                    dist[v] = wt + dist[node];
+                }
+            }
+        }
+
+        /* If a node is unreachable, 
+        updating its distance to -1 */
+        for (int i = 0; i < N; i++) {
+            if (dist[i] == (int)1e9)
+                dist[i] = -1;
+        }
+
+        // Return the result
+        return dist;
+ 
+  }
+}

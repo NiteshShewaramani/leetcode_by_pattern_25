@@ -1,0 +1,71 @@
+class Solution {
+    /**
+    Time Complexity: O(N+M) BFS raversal
+    Space Complexity: O(N+M)
+    */
+    static class Pair
+    {
+        int vertice;
+        int dist;
+        public Pair(int v , int wt)
+        {
+            vertice = v;
+            dist = wt;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public int[] shortestPath(int[][] edges, int N, int M) {
+        int distArray[] = new int[N];
+        int src = 0;
+
+        List<List<Integer>> adj = new ArrayList();
+        //create graph
+        for(int i=0;i<N;i++)
+            adj.add(new ArrayList());
+
+        for (int[] edge : edges) {
+            int u = edge[0]; // first node
+            int v = edge[1]; // second node
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+           
+        //start BFS
+        Queue<Pair> q = new LinkedList();
+        
+        Arrays.fill(distArray,1_000_000);
+        //set source
+        q.offer(new Pair(0,0));
+
+        distArray[0]=0;
+
+        while(!q.isEmpty())
+        {
+            Pair currentPair = q.poll();
+            int node = currentPair.vertice;
+            int distanceToParent = currentPair.dist;
+
+            for(int n : adj.get(node))
+            {
+               
+                //only add in q if distance array is greater than current distance
+                //+ 1 to reach current node
+                if(distArray[n] > distanceToParent + 1 )
+                {
+                    distArray[n] = distanceToParent + 1;
+                    q.offer(new Pair(n , distanceToParent + 1));
+                }
+            }
+        }
+
+        /* If a node is unreachable, 
+        updating its distance to -1 */
+        for (int i = 0; i < N; i++) {
+            if (distArray[i] == 1_000_000) 
+                distArray[i] = -1;
+        }
+
+        return distArray;
+
+    }
+}

@@ -1,0 +1,67 @@
+class Solution {
+/**
+TC - O(V + E) dfs time
+SC - O(V)
+*/
+    @SuppressWarnings("unchecked")
+    public String findOrder(String [] dict, int N, int K) {
+        int alphabets[] = new int[K];
+        int visited[] = new int[K];
+        //int pathvisited[]
+        Stack<Integer> st = new Stack();
+        List<List<Integer>> adj = new ArrayList();
+
+        for(int i= 0 ;i<K;i++)
+        {
+            adj.add(new ArrayList());
+
+        }
+
+        for(int i = 0 ;i < dict.length - 1 ; i++)
+        {
+            String word1 = dict[i];
+            String word2 = dict[i+1];
+            int a1 = 0 , a2  = 0;
+            while(a1<word1.length() && a2<word2.length() && word1.charAt(a1) == word2.charAt(a2))
+            {
+                a1++;
+                a2++;
+            }
+            adj.get(word1.charAt(a1) - 97 ).add(word2.charAt(a2) - 97);
+        }
+
+        for(int i = 0 ;i<K;i++)
+        {
+            if(visited[i] == 0)
+            {
+                dfs(visited,adj,st,i);
+            }
+        }
+        String answer = "";
+        while(!st.isEmpty())
+        {
+            int v = st.pop();
+            answer = answer + " " + ( (char) (v +97)); 
+        }
+        //System.out.println("a - " + answer);
+        return answer;
+
+
+    }
+
+    private void dfs(int visited[] ,List<List<Integer>> adj ,Stack<Integer> st , int node)
+    {
+        visited[node]=1;
+
+        for(int n : adj.get(node))
+        {
+            if(visited[n] == 0)
+            {
+                dfs(visited,adj,st,n);
+            }
+
+        }
+        st.add(node);
+
+    }
+}

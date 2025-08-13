@@ -1,0 +1,54 @@
+class Solution {
+    class Pair{
+        public String word;
+        public int count;
+        public Pair()
+        {}
+        public Pair(String word,int count)
+        {
+            this.word=word;
+            this.count=count;
+        }
+    }
+    //time complexity (wordlength * 26)(inner for loop) * no of words in wordlist
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Queue<Pair> queue = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        
+        for(String word : wordList)
+        {
+            if(!beginWord.equals(word))
+                set.add(word);
+        }
+
+        queue.add(new Pair(beginWord,1));
+
+        while(!queue.isEmpty())
+        {
+            Pair first = queue.remove();
+            int step = first.count;
+            String word = first.word;
+            if(word.equals(endWord))
+                return step;
+            
+            char[] array = word.toCharArray();
+            for(int i=0;i<array.length;i++)
+            {
+                char original = array[i];
+                for(char ch ='a';ch<='z';ch++)
+                {
+                    array[i]=ch;
+                    String newWord = new String(array);
+                    if(set.contains(newWord))
+                    {
+                        queue.add(new Pair(newWord,step+1));
+                        //remove it to make sure we don't visit the same word again 
+                        set.remove(newWord);
+                    }
+                }
+                array[i]=original;
+            }
+        }
+        return 0;
+    }
+}

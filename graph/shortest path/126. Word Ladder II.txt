@@ -1,0 +1,112 @@
+class Solution {
+/**
+Time Complexity: O(N*M*26)
+
+In the worst case, the steps required to reach from startWord to targetWord can go up to N. During each step, all the characters for the word are replaced from 'a' to 'z' taking O(M*26) time.
+Adding all the words in wordList takes O(N) time.
+Each word is enqueued and dequeued at most once, leading to O(N) queue operations.
+Checking if a word exists in the set and removing a word from the set takes O(1) on average. If there are N words, there are O(N) set operations.
+Note: If an ordered set is used in place of an unordered set then there will be a logN factor adding to the time complexity, since delete and update operations take O(logN) time for the ordered set.
+Space Complexity: O(N*M)
+A HashSet is used to store words in wordList taking O(N) space. In the worst case, the queue will store all possible sequences leading to a space requirement of O(N*M). Storing the result in a list will take O(N*M) space.
+*/
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+
+        // To store the answer
+        List<List<String>> ans = new ArrayList<>();
+        
+        // Queue data structure to store 
+        // the sequence of transformations
+        Queue<List<String>> q = new LinkedList<>();
+        
+        // Add all the words to a hashset
+        Set<String> st = new HashSet<>(wordList);
+        
+        // Add the sequence containing starting word to queue
+        q.add(new ArrayList<>(Arrays.asList(beginWord)));
+        
+        // Erase starting word from set if it exists
+        st.remove(beginWord);
+        
+        // Set to store the words that must be deleted 
+        // after traversal of a level is complete
+        Set<String> toErase = new HashSet<>();
+        
+        // Until the queue is empty
+        while (!q.isEmpty()) {
+            
+            // Size of queue
+            int size = q.size();
+            
+            // Traversing all words in current level
+            for (int i = 0; i < size; i++) {
+                
+                // Sequence 
+                List<String> seq = q.poll();
+                
+                // Last added word in sequence
+                String word = seq.get(seq.size() - 1);
+                
+                // If the last word same as end word
+                if (word.equals(endWord)) {
+                    // Add the sequence to the answer
+                    if (ans.isEmpty()) {
+                        ans.add(new ArrayList<>(seq));
+                    }
+                    else if (ans.get(ans.size() - 1).size() == 
+                             seq.size()) {
+                        ans.add(new ArrayList<>(seq));
+                    }
+                }
+                
+                // Iterate on every character
+                for (int pos = 0; pos < word.length(); pos++) {
+                    
+                    // Original letter
+                    char original = word.charAt(pos);
+                    
+                    // Replacing current character with
+                    // letters from 'a' to 'z' to match 
+                    // any possible word from set
+                    for (char ch = 'a'; ch <= 'z'; ch++) {
+                        char[] wordArray = word.toCharArray();
+                        wordArray[pos] = ch;
+                        String newWord = new String(wordArray);
+                        
+                        // Check if it exists in the set
+                        if (st.contains(newWord)) {
+                            // Update the sequence
+                            seq.add(newWord);
+                            
+                            // Push in the queue
+                            q.add(new ArrayList<>(seq));
+                            
+                            // Add the word to erase map
+                            toErase.add(newWord);
+                            
+                            // Backtracking step
+                            seq.remove(seq.size() - 1);
+                        }
+                    }
+                    
+                    // Update the original letter back
+                    String beforePos = word.substring(0, pos);
+                    String afterPos = word.substring(pos + 1);
+                    word = beforePos + original + afterPos;
+                }
+            }
+            
+            // Erase all the words in set after
+            // traversal of a level is completed
+            for (String it : toErase) st.remove(it);
+            toErase.clear();
+            
+            // If answer is found, break
+            if (!ans.isEmpty()) break;
+        }
+        
+        // Return the result found
+        return ans;
+        
+    }
+}

@@ -1,0 +1,63 @@
+class Pair  {
+    int steps;
+    int value;
+    public Pair(int v,int s)
+    {
+        value = v;
+        steps=s;
+
+    }
+
+}
+/**
+Time Complexity: O(100000*N) (where N is the length of given array)
+A simple BFS traversal is performed taking O(V+E) time, where V represents nodes (which can be 100000 in the worst case) and E represents the number of edges (transitions) (which can be 100000*N, since for every value, N edges are formed). This makes the overall time complexity as O(100000*N)
+Space Complexity: O(100000*N)
+**/
+class Solution {
+    public int minimumMultiplications(int[] arr, int start, int end) {
+        if(start==end)
+            return 0;
+
+        Queue<Pair> q = new LinkedList();
+        /* Array to store minimum 
+        steps (distance array) */
+        int[] minSteps = new int[100000];
+        Arrays.fill(minSteps, Integer.MAX_VALUE);
+
+        // Mark initial position as 0
+        minSteps[start] = 0;
+
+        q.offer(new Pair(start,0));
+
+        while(!q.isEmpty())
+        {
+            Pair p = q.poll();
+            int  steps = p.steps;
+            int  value = p.value;
+            if(value == end)
+                return steps;
+            for(int i : arr)
+            {
+                int ans = (i * value)%100000;
+                if(ans == end)
+                    return steps+1;
+
+                /* Check if the current steps taken is 
+                less than earlier known steps */
+                if (steps + 1 < minSteps[ans]) {
+                    
+                    // Update the known steps
+                    minSteps[ans] = steps + 1;
+                    
+                    // Insert the pair in queue
+                    q.offer(new Pair(ans,steps+1));
+                }    
+                
+            }
+
+        }
+        return -1;
+    }
+    
+}

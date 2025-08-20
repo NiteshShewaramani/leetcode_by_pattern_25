@@ -1,0 +1,98 @@
+class Pair
+{
+    public int row;
+    public int column;
+    public int distance;
+    public Pair(int row,int column,int distance)
+    {
+        this.row = row;
+        this.column = column;
+        this.distance = distance;
+    }
+}
+class Solution {
+    /**
+    TC O(n x m x log(n x m)) each cell visited once + PQ insertion and deletion time
+    SC O(n x m)
+     */
+    public int bfs(int[][] heights)
+    {
+        int n = heights.length;
+        int m = heights[0].length;
+        int dist[][] = new int[n][m];
+
+        for(int row[] : dist)
+        {
+            Arrays.fill(row,Integer.MAX_VALUE);
+        }
+        PriorityQueue<Pair>  queue = new PriorityQueue<>((p1,p2)-> p1.distance - p2.distance); 
+        
+        queue.add(new Pair(0,0,0));
+        
+        dist[0][0]=0;
+        
+        while(!queue.isEmpty())
+        {
+            Pair node = queue.poll();
+            int i = node.row;
+            int j = node.column;
+            int diff= node.distance;
+
+            if(i==n-1 && j==m-1)
+            {
+               return diff;
+            }
+            
+            //check all 4 directions
+            if(j+1<m)
+            {
+                int absD = Math.abs(heights[i][j] - heights[i][j+1]);
+                int newEffort = Math.max(absD,diff);
+                if(newEffort < dist[i][j+1])
+                {
+                    queue.add(new Pair(i,j+1,newEffort));
+                    dist[i][j+1]=newEffort;
+
+                }
+            }
+            if(j-1>=0 )
+            {
+                int absD = Math.abs(heights[i][j] - heights[i][j-1] );
+                int newEffort = Math.max(absD,diff);
+                if(newEffort < dist[i][j-1])
+                {
+                    queue.add(new Pair(i,j-1,newEffort));
+                    dist[i][j-1]=newEffort;
+                }
+            }
+            if(i+1<n)
+            {
+                int absD = Math.abs(heights[i+1][j] - heights[i][j] );
+                int newEffort = Math.max(absD,diff);
+                if(newEffort < dist[i+1][j])
+                {
+                    queue.add(new Pair(i+1,j,newEffort));
+                    dist[i+1][j]=newEffort;
+                }
+
+            }
+            if(i-1>=0)
+            {
+                int absD = Math.abs(heights[i-1][j] - heights[i][j] );
+                int newEffort = Math.max(absD,diff);
+                if(newEffort < dist[i-1][j])
+                {
+                    queue.add(new Pair(i-1,j,newEffort));
+                    dist[i-1][j]=newEffort;
+                }
+
+            }
+        }
+        return 0;
+
+    }
+    public int minimumEffortPath(int[][] heights) {
+        
+        return bfs(heights);
+    }
+}

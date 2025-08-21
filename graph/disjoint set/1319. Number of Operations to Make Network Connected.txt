@@ -1,0 +1,75 @@
+/**
+TC O (n x 4A) 4A for find by parent
+SC O ( n+n)
+*/
+class UnionBySize {
+    public int parent[] , size[];
+    public UnionBySize(int n)
+    {
+        parent = new int[n];
+        size = new int[n];
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            size[i]=1;
+        }        
+    }
+    public int findParent(int node)
+    {
+        if(node == parent[node])
+            return node;
+        //path compression
+        return parent[node] = findParent(parent[node]);
+    }
+
+    public boolean connected(int u,int v)
+    {
+        return findParent(u) == findParent(v);
+    }
+
+    public void union(int u,int v)
+    {
+        int ultimateParentU = findParent(u);
+        int ultimateParentV = findParent(v);
+
+        if(size[ultimateParentU] < size[ultimateParentV]){
+            size[ultimateParentV] = size[ultimateParentV] + size[ultimateParentU];
+            parent[ultimateParentU] = ultimateParentV;
+        }
+        else {
+            size[ultimateParentU] = size[ultimateParentV] + size[ultimateParentU];
+            parent[ultimateParentV] = ultimateParentU;
+        }
+
+    }
+}
+
+class Solution {
+    public int makeConnected(int n, int[][] connections) {
+        UnionBySize obj = new UnionBySize(n);
+        int extraCables = 0;
+        for(int i = 0 ; i< connections.length;i++)
+        {
+            int u = connections[i][0];
+            int v = connections[i][1];
+            if(obj.connected(u,v))
+                ++extraCables;
+            
+            
+            obj.union(u,v);
+        }
+        int uniqueComponenets = 0;
+        for(int i=0;i<n;i++)
+        {
+            if(i == obj.parent[i])
+                ++uniqueComponenets;
+
+        }
+
+        if(extraCables >= uniqueComponenets-1)
+            return uniqueComponenets-1;
+
+
+        return -1;    
+    }
+}

@@ -1,0 +1,87 @@
+class Pair
+{
+    int node;
+    long distance;
+    public Pair(int n,long d)
+    {
+        node =n;
+        distance=d;
+    }
+}
+/**
+Time Complexity: O(M*logN) A simple Dijkstra's algorithm is used which takes O(E*logV) time (where V and E represents the number of nodes and edges in the graph respectively).
+
+Space Complexity: O(N)
+
+Dijkstra's Algorithm will take extra O(N) space due to priority queue and array to store minimum time to reach nodes.
+**/
+class Solution {
+    static int MOD = 1_000_000_007;
+    public int countPaths(int n, int[][] roads) {
+        List<List<Pair>> adj = new ArrayList();
+
+        for(int i=0;i<n;i++)
+        {
+            adj.add(new ArrayList());
+        }
+        for(int i=0;i<roads.length;i++)
+        {
+            int u = roads[i][0];
+            int v = roads[i][1];
+            int d = roads[i][2];
+            //bi-directional roads
+            adj.get(u).add(new Pair(v,d));
+            adj.get(v).add(new Pair(u,d));
+        }
+        int ways[] = new int[n];
+        long dist[] = new long[n];
+        //Arrays.fill(ways,1);
+        Arrays.fill(dist,Long.MAX_VALUE);
+
+        PriorityQueue<Pair> q = new PriorityQueue<>(
+            (Pair a,Pair b) ->
+            {
+                if(a.distance == b.distance)
+                {
+                    return a.node - b.node;
+                }
+                return (int) (a.distance - b.distance);
+            }
+        );
+
+        q.offer(new Pair(0,0));
+        ways[0] = 1;
+        dist[0] = 0;
+
+        while(!q.isEmpty()) {
+            Pair current = q.poll();
+            int startNode = current.node;
+            long startDist = current.distance;
+            for(Pair neighbour : adj.get(startNode))
+            {
+                long eW = neighbour.distance;
+                int eN = neighbour.node;
+                // This ‘if’ condition signifies that this is the first
+                // time we’re coming with this short distance, so we push
+                // in PQ and keep the no. of ways the same.
+                if( eW+startDist < dist[eN])
+                {
+                    dist[eN] = eW+startDist;
+                    ways[eN] = ways[startNode] % MOD ;
+                    q.offer(new Pair(eN,dist[eN]));
+                }
+                else if(eW+startDist == dist[eN])
+                {
+                    // If we again encounter a node with the same short distance
+                    // as before, we simply increment the no. of ways.
+                    ways[eN] = ways[startNode]% MOD + ways[eN] % MOD;
+                }
+            }
+        }
+        if(ways[n-1]==0)
+            return -1;
+        
+        return ways[n-1] % MOD;
+        
+    }
+}

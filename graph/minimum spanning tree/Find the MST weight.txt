@@ -1,0 +1,54 @@
+/**
+Time Complexity: O(ElogE) (where E is the number of edges in the graph)
+In the worst case, the min-heap will store all the E edges, and insertion operation on the min-heap takes O(logE) time taking overall O(ElogE) time.
+
+Space Complexity: O(E + V) (where V is the number of nodes in the graph)
+The min-heap will store all edges in worst-case taking O(E) space and the visited array takes O(V) space.
+*/
+class Pair {
+    int edgeWeight;
+    int node;
+    int parent;
+    public Pair(int w , int n , int p)
+    {
+        edgeWeight = w;
+        node = n;
+        parent = p;
+
+    }
+}
+class Solution {
+    public int spanningTree(int V, List<List<List<Integer>>> adj) {
+        int visited[] = new int[V];
+        int sum =0;
+        PriorityQueue<Pair> q = new PriorityQueue<>(
+            (Pair a, Pair b) ->
+            {
+                return a.edgeWeight - b.edgeWeight;
+            }
+        );
+
+        q.offer(new Pair(0,0,-1));
+
+        while(!q.isEmpty())
+        {
+            Pair current = q.poll();
+            int weight = current.edgeWeight;
+            int node = current.node;
+
+            if(visited[node] == 0)
+            {
+                sum = sum + weight;
+                for(List<Integer> nodes : adj.get(node))
+                {
+                    int nN = nodes.get(0);
+                    int nW = nodes.get(1);
+                    q.offer(new Pair(nW,nN,node));
+                }
+            }
+            visited[node]=1;
+        }
+        return sum;
+    }
+}
+

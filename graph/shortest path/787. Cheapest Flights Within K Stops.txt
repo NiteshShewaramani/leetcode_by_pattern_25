@@ -1,0 +1,78 @@
+class Pair {
+    int stops;
+    int distance;
+    int node ;
+    public Pair(int d,int s,int n)
+    {
+        distance = d;
+        stops=s;
+        node=n;
+    }
+}
+
+class Pair2 {
+    int distance;
+    int node ;
+    public Pair2(int d,int n)
+    {
+        distance = d;
+        node=n;
+    }
+}
+/**
+Time Complexity:O(E + V*K) where E is the number of edges (flights), V is the number of vertices (cities), and K is the maximum number of stops allowed.
+Space Complexity:O(V + Q) where V is the number of vertices and Q is the size of the queue, which can grow up to V*K in the worst case
+**/
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        List<List<Pair2>> adj = new ArrayList();
+
+        for(int i=0;i<n;i++)
+        {
+            adj.add(new ArrayList());
+        }
+
+        for(int i=0;i<flights.length;i++)
+        {
+            int u = flights[i][0];
+            int v = flights[i][1];
+            int dist = flights[i][2];
+            adj.get(u).add(new Pair2(dist,v));
+        }
+
+        Queue<Pair> q = new LinkedList();
+
+        q.offer(new Pair(0,0,src));
+        int[]dist = new int[n];
+
+        Arrays.fill(dist,Integer.MAX_VALUE);
+
+        dist[src]=0;
+
+        while(!q.isEmpty())  {
+            Pair current = q.poll();
+            int startNode = current.node;
+            int startDistance = current.distance;
+            int startStops = current.stops;
+
+            for(Pair2 i : adj.get(startNode))     {
+                int eW = i.distance;
+                int cNode = i.node;
+                
+                //only add if distance is less and stops are correct
+                if(eW + startDistance < dist[cNode] && (startStops+1) <= k)
+                {
+                    dist[cNode] = eW + startDistance;
+                    q.offer(new Pair(dist[cNode],startStops+1,cNode));
+                }
+                else if(cNode == dst && eW + startDistance < dist[cNode])
+                {
+                    //reached destination
+                    dist[cNode] = eW + startDistance;
+                }
+            }
+        }
+        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+        
+    }
+}

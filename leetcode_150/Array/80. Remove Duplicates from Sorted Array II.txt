@@ -1,0 +1,19 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int i=2,j=2;   
+        // Initilize two pointer i and j both as 2.
+        while(i<nums.length){   
+            // Iterate loop from i till nums.length
+            //i != j-2 means that there 3 duplicate elements we need to convert 
+            // j to i
+            if(nums[i]!=nums[j-2]){   
+                // Check if nums[i] is not equal to the nums[j-2] 
+                //if this return true then modify nums[j] with nums[i] and increase j by 1.
+                nums[j]=nums[i];
+                j++;
+            }
+            i++;   // increase i by 1.
+        }
+        return j; 
+    }
+}

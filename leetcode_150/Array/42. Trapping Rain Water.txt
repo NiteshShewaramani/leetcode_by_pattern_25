@@ -1,0 +1,46 @@
+class Solution {
+    // TC - O(2N) = O(n)
+    // SC - O(1)
+    //https://www.youtube.com/watch?v=WOO27cP8rN4&list=PL1MJrDFRFiKa6ujcwZcMB8DdNzUg29BXy&index=8
+// [Java] Leetcode 42. Trapping Rain Water [Two Pointers #8] - eric programming
+    public int trap(int[] height) {
+        int indexOfMaxHeight = 0 , n = height.length , sum = 0 ;
+        //base case
+        if(n<3)
+        return 0;
+        //traverse the entire array to find max height
+        for(int i=0;i<n;i++)
+        {
+            if(height[i]>height[indexOfMaxHeight])
+            {
+                indexOfMaxHeight = i;
+            }
+        }
+        int leftIndex = 0;
+        //water trapped formula is min(left height max , right hight max) - currentheight
+        //traverse from left till maximum value on the  right side and keep calculating water trapped
+        for(int currentIndex = 0;currentIndex<indexOfMaxHeight;currentIndex++)
+        {
+            if(height[currentIndex]>height[leftIndex])
+            {
+                leftIndex = currentIndex;
+            }
+            sum = sum + Math.min(height[leftIndex],height[indexOfMaxHeight]) - height[currentIndex]; 
+
+        }
+        int rightIndex = n-1;
+
+         //traverse from right till maximum value on the left side and keep calculating water trapped
+        for(int currentIndex = n-1;currentIndex>indexOfMaxHeight;currentIndex--)
+        {
+            if(height[currentIndex]>height[rightIndex])
+            {
+                rightIndex = currentIndex;
+            }
+            sum = sum + Math.min(height[rightIndex],height[indexOfMaxHeight]) - height[currentIndex];
+        }
+
+
+        return sum;
+    }
+}

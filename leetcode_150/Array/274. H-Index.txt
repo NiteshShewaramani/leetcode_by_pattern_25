@@ -1,0 +1,45 @@
+class Solution {
+//TC O(N)
+//SC O(N)
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        //the index of citation will be between 0 and n
+        //creating freq till n+1
+        int freq[] = new int[n+1];
+        /**
+        for input [3,0,6,1,5]
+        freq will be for index - [ 0 , 1 , 2 , 3 , 4 , 5  ]
+                                 [ 1 , 1 , 0 , 1 , 0 , 2  ]
+         */
+
+        for(int i=0;i<n;i++)
+        {
+            if(citations[i]>n)
+            {
+                freq[n]++;
+            }
+            else
+            freq[citations[i]]++;
+        }
+        //it means we have atleast n papers with n citations
+        if(freq[n]>=n)
+        return n;
+        /**
+        index - [ 0 , 1 , 2 , 3 , 4 , 5  ]
+        freq is [ 1 , 1 , 0 , 1 , 0 , 2  ]
+        if we start from back 
+        if you look at index 3 we have 1 paper and we have 2 paper for 5
+        that mean for index 3 we have atleast 3 paper with greater than 3 citations
+         */
+        for(int end = n-1 ; end>=0 ; end--)
+        {
+        //we are countting frequency by index
+        // we need to return the index not the value
+        freq[end] = freq[end] + freq[end+1];
+            if(freq[end]>=end) {
+                return end;
+            }
+        }
+        return 0;
+    }
+}

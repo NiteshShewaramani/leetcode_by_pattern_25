@@ -1,0 +1,41 @@
+class Solution {
+    //TC O(N)
+    public boolean canJump(int[] nums) {
+         int reachable = 0;
+    for(int index=0;index<nums.length;index++)
+    {
+        //it means we cannot reach this index
+        //or there is no way to reach this index
+        if(index>reachable)
+        return false;
+
+        //the idea here is that for us to reach the end 
+        //we are keeping track of the maximum index we can reach
+        /**
+        example [2,3,1,1,4]
+        intially with index 0 the maximum we can reach is 2+0
+        but with index 1 the maxmimun we can reavh is 4 (1+3)
+        with index 2 we can reach (2+1) = 3 , reachable is still 4
+        with index 3 we can reach (3+1) = 4, reachable is still 4
+        with index 4 we have reached the end
+
+        another example
+        [1,0,1,0]
+        intially with index 0 the max we can reach is 0+1 -1
+        with index 1 we can reach 1
+        with index 2 our index 2 is greater than reachable 1 
+        that means no way to reach index 2 so we return false
+
+         */
+    
+        reachable = Math.max(reachable,index+nums[index]);
+
+    }
+    
+    return true;
+
+
+    }
+
+    
+}

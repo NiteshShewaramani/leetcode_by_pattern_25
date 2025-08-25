@@ -1,0 +1,20 @@
+class Solution {
+//TC O(N)
+    public int jump(int[] nums) {
+        int currentEnd=0,currentFarthest=0,jumps=0;
+        for(int i=0;i<nums.length-1;i++)
+        {
+            //currentFarthest means how far we can go
+            //so we start at i=0 and nums[i] = 2 so the distance we can go is upto the 2 index
+            currentFarthest=Math.max(currentFarthest,i+nums[i]);
+            //when we reach the current end means we have covered all cases till now
+            if(i==currentEnd)
+            {
+                ++jumps;
+                //changing the currentEnd to how far we can reach
+                currentEnd=currentFarthest;
+            }
+        }
+        return jumps;
+    }
+}

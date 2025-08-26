@@ -1,0 +1,36 @@
+class Solution {
+    //TC O(N)
+    //SC O(1) NEETCODE
+    public int trap(int[] height) {
+        int n= height.length-1;
+        int leftMax = height[0];
+        int rightMax = height[n];
+        int lPointer = 0 , rPointer = n;
+        int totalWaterTrapped =  0;
+        while(lPointer < rPointer) {
+            if(height[lPointer] <= height[rPointer]) {
+
+                int currentWaterTrapped = leftMax - height[lPointer] ;
+                if(currentWaterTrapped>0)
+                {
+                    totalWaterTrapped = totalWaterTrapped + currentWaterTrapped;
+                }
+                else 
+                leftMax = height[lPointer];
+                 
+                lPointer++;
+            }
+            else {
+                int currentWaterTrapped = rightMax - height[rPointer]  ;
+                if(currentWaterTrapped>0) {
+                    
+                    totalWaterTrapped = totalWaterTrapped + currentWaterTrapped;
+                } else
+                rightMax = height[rPointer];
+
+                rPointer--;
+            }
+        }
+        return totalWaterTrapped;
+    }
+}

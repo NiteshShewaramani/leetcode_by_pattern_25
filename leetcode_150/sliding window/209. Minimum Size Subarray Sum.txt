@@ -1,0 +1,29 @@
+class Solution {
+    /**
+    TC - O(2N) - both l and r will run max till N
+    SC - O(1)
+    
+     */
+    public int minSubArrayLen(int target, int[] nums) {
+        // maximun possible length is when the entire array is taken 
+        // example target = 15 nums = [1,2,3,4,5] , 
+        // o/p = 5 , so asign minLength as array length +1
+        int right = 0 , left = 0 , minLength = nums.length + 1 , sum = 0;
+
+        while(right < nums.length)
+        {
+            sum = sum + nums[right];
+            //shrink the window when sum if greater than target bcaz we want to find minium length    
+            while(sum>=target)
+            {
+                minLength = Math.min(minLength,right-left+1);
+                sum = sum - nums[left];
+                left++;
+            }
+            right++;
+        }
+
+        return minLength == (nums.length+1) ? 0 : minLength;
+        
+    }
+}

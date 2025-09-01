@@ -1,0 +1,43 @@
+class Solution {
+    HashMap<String,Integer> counts = new HashMap();
+    //TC - O(n⋅w).    n size of string and w size of one word
+    //SC - O(m) m is no of words
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>(32);
+        int totalLen = s.length();
+        int wordLen = words[0].length();
+        int concatenatedWordSize = words.length * wordLen;
+
+        if(totalLen < concatenatedWordSize)
+        return ans;
+
+        for(String word : words)
+            counts.put(word,counts.getOrDefault(word,0) + 1);
+        
+
+        for(int i=0 ; i < (totalLen -concatenatedWordSize) + 1 ; i++ )
+        {
+            if(check(i,i+concatenatedWordSize,wordLen,s))
+            {
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+
+    /**
+        This function takes a window size of the lenght of concatenated string and checks
+        if it matches with the word in the word list. 
+     */
+    private boolean check(int start,int end , int wordLen, String s)
+    {
+        HashMap<String,Integer> seen = new HashMap();
+        for(int j = start ; j < end ; j = j + wordLen )
+        {
+            String word = s.substring(j , j + wordLen);
+            seen.put(word,seen.getOrDefault(word,0)+1);  
+        }
+        return seen.equals(counts);
+
+    }
+}

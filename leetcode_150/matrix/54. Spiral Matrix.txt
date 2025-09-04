@@ -1,0 +1,29 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+         int t = 0, b = matrix.length-1, l = 0, r = matrix[0].length-1;
+        //using 4 loops to add all at once 
+        //for each side 
+        List<Integer> res = new ArrayList<>();
+        String dir = "right";
+        while( t <= b && l <= r ){
+            if( dir.equals("right") ){
+                for(int i=l; i<=r; i++) res.add(matrix[t][i]);
+                t++;
+                dir = "bottom";
+            }else if( dir.equals("bottom") ){
+                for(int i=t; i<=b; i++) res.add(matrix[i][r]);
+                r--;
+                dir = "left";
+            }else if( dir.equals("left") ){
+                for(int i=r; i>=l; i--) res.add(matrix[b][i]);
+                b--;
+                dir = "top";
+            }else if( dir.equals("top") ){
+                for(int i=b; i>=t; i--) res.add(matrix[i][l]);
+                l++;
+                dir = "right";
+            }
+        }
+        return res;
+    }
+}

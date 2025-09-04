@@ -1,0 +1,36 @@
+class Solution {
+    //https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/
+    public void setZeroes(int[][] matrix) {
+        Queue<int []> zeroPositions = new LinkedList<>();
+        int rows=matrix.length;
+        int columns=matrix[0].length;
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<columns;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    zeroPositions.add(new int[]{i,j});
+                }
+            }
+        }
+
+        while(!zeroPositions.isEmpty())
+        {
+            int[] value=zeroPositions.poll();
+            int row = value[0];
+            int col = value[1];
+            for(int j=0;j<rows;j++)
+            {
+                //making column 0
+                matrix[j][col]=0;
+            }
+            for(int j=0;j<columns;j++)
+            {
+                //making column 0
+                matrix[row][j]=0;
+            }
+        }
+
+    }
+}

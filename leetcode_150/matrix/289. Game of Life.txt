@@ -1,0 +1,76 @@
+class Solution {
+    // 0 was converted to 1
+    int live = 3;
+    // 1 got converted to 0 
+    int die = 2;
+
+    int row = 0 ,col =0;
+    public void gameOfLife(int[][] board) {
+        row = board.length;
+        col = board[0].length;
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+
+                int newState = checkNeighbour(i,j,board);
+                //-1 means state did not change
+                if(newState != -1)
+                {
+                    board[i][j] = newState;
+                }
+            }
+        }
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                if(board[i][j] == 2)
+                {
+                    board[i][j] = 0;
+                }
+                else if(board[i][j] == 3)
+                {
+                    board[i][j] = 1;
+                }
+            }
+        }
+    }
+
+    public int checkNeighbour(int i,int j,int[][] board)
+    {
+        int countOfOne = 0;
+        int newState = -1;
+        for(int r = -1; r<=1;r++)
+        {
+            for(int c = -1;c<=1;c++)
+            {
+                int newR = i + r;
+                int newC = j + c;
+                if(r==0 && c==0)
+                continue;
+
+
+                if(newR>=0 && newC>=0 && newR<row && newC<col)
+                {
+                    if(board[newR][newC] == 1 || board[newR][newC] == 2)
+                        ++countOfOne;
+
+                }
+            }
+        }
+        if(board[i][j]==1)
+        {
+            if(countOfOne > 3 || countOfOne<2)
+            return 2;
+        }
+        else
+        {
+            if(countOfOne == 3)
+            return 3;
+        }
+        return newState;
+    }
+}

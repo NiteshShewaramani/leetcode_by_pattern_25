@@ -1,0 +1,34 @@
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String arr[] = s.split(" ");
+
+        Map<Character,String> map = new HashMap();
+        Map<String,Character> mapReverse = new HashMap<>();
+
+        if(pattern.length() != arr.length)
+            return false;
+
+        for(int i=0;i<pattern.length();i++){
+            String mainWord = arr[i];
+            char c = pattern.charAt(i);
+
+            if(map.containsKey(c))
+            {
+                String word = map.get(c);
+                if(!word.equals(arr[i]))
+                    return false;
+
+            }
+            if(mapReverse.containsKey(mainWord))
+            {
+                Character mapC = mapReverse.get(mainWord);
+                if(c!=mapC)
+                    return false;
+            }
+            map.put(c,mainWord);
+            mapReverse.put(mainWord,c);
+               
+        }
+        return true;
+    }
+}

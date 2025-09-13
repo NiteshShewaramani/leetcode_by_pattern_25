@@ -1,0 +1,53 @@
+class Solution {
+//     sum = 0;
+// sign = 1;
+// starting from left to right of equation for each character 'ch'
+// 	if ch == number
+// 		1. multiply number with its associate sign (which is being stored in 'sign' variable (1,-1));
+// 		2. add the signed number in our sum
+// 		3. update sign = 1
+// 	else if ch == '-'
+// 		1. toggle value of sign. '-' operator has a power to change the sign of any number.
+// 	else if ch == '('
+// 		Now we have to store our till now sum and sign value (here sign value will be for the result of sum of equation in parenthesis)
+// 		1. store sum and sign in stack.
+// 		2. assign sum = 0 and sign = 1;
+// 	else if ch == ')'
+// 		At this point, we have calculated the sum of equation in parentheis, and have to update our overall result.
+// 		1. pop out sign from stack , 'poppedSign'
+// 		2. pop out sum from stack (sum is the result of equation before the open parenthesis), 'presum'
+// 		3. update sum = (sum * poppedSign) + presum;
+	
+// end of for loop
+    
+    public int calculate(String s) {
+        int sum = 0;
+        int sign = 1;
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(Character.isDigit(ch)){
+                int val = 0;
+                while(i < s.length() && Character.isDigit(s.charAt(i))){
+                    val = val * 10 + (s.charAt(i) - '0');
+                    i++;
+                }
+                sum += (val * sign);
+                sign = 1;
+                i--;
+            }else if(ch == ')'){
+                int poppedSign = stack.pop();
+                int preSum = stack.pop();
+                sum  = (sum * poppedSign) + preSum;
+            }else if(ch == '('){
+                stack.push(sum);
+                stack.push(sign);
+                sum = 0;
+                sign = 1;
+            }else if(ch == '-'){
+                sign *= -1;
+            }
+        }
+        return sum;
+    }
+}

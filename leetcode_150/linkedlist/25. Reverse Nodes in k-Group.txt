@@ -1,0 +1,70 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    private ListNode findKthNode(ListNode head, int k)
+    {
+        --k;
+        //for k=3 the actual loop will run 3 time s bcaz we have head as first element
+        while(k>0 && head!=null)
+        {
+            --k;
+            head=head.next;
+        }
+        
+        return head;
+    }
+    private ListNode reverse(ListNode head)
+    {
+        ListNode current = head;
+        ListNode prev=null;
+        while(current!=null)
+        {
+            ListNode next = current.next;
+            current.next=prev;
+            prev=current;
+            current=next;
+        }
+        return prev;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode temp=head,nextNode=null,prevNode=null;
+
+        while(temp!=null)
+        {
+            ListNode kthNode = findKthNode(temp,k);
+            if(kthNode == null)
+            {
+                //before breaking out point prevnode next to temp
+                if(prevNode!=null)
+                prevNode.next=temp;
+                break;
+            }
+            else
+            {
+                nextNode = kthNode.next;
+                kthNode.next=null;
+                ListNode reverseHead = reverse(temp);
+                //for first group we need to change head
+                if(temp==head)
+                head=reverseHead;
+                else{
+                    //if we are not updating head connect the previous node with current head
+                    prevNode.next=reverseHead;
+                }
+                prevNode=temp;
+                temp=nextNode;
+            }
+        }
+        return head;
+    }
+    
+}

@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+
+public class Main {
+    //TC O(N)
+    //SC O(1)
+    public ArrayList<Integer> pair_sum_sorted(ArrayList<Integer> nums, int target) {
+        // Write your code here
+        ArrayList<Integer> ans = new ArrayList();
+        int left = 0 ,right = nums.size()-1;
+        while(left<right) {
+            int sum = nums.get(left) + nums.get(right);
+            if(sum == target) {
+                ans.add(left);
+                ans.add(right);
+                return ans;
+            }
+            else if(sum < target) left++;
+            else right--;
+
+        }
+        return ans;
+    }
+}

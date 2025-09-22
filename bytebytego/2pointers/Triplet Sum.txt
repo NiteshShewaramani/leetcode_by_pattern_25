@@ -1,0 +1,54 @@
+class Solution {
+    //TC O(N ^ 2)
+    //SC O(N ^ 2)
+    @SuppressWarnings("unchecked")
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>>  ans = new ArrayList();
+        Arrays.sort(nums);
+
+        int i = 0;
+        for(;i < nums.length - 2;i++) {
+            int target = nums[i];
+            //sorted array all values will be positive 
+            if(target>0)
+                break;
+            
+            //avoid checking for duplicates
+            if(i>0 && target == nums[i-1])
+                continue;
+            
+            List<List<Integer>> pairs =  targetSum(nums , i+1 , target * -1);      
+            //found  pairs  
+            for(List<Integer> temp : pairs) {
+                temp.add(target);
+                ans.add(temp);
+            }
+        }
+
+        return ans;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<List<Integer>> targetSum(int[] nums , int start,int target ) {
+        int left = start , right = nums.length - 1;
+        List<List<Integer>>    ans = new ArrayList();
+
+        while(left < right) {
+            int sum = nums[left] + nums[right];
+            if(sum == target) {
+                List<Integer> newPair = new ArrayList();
+                newPair.add(nums[left]);
+                newPair.add(nums[right]);
+                ans.add(newPair);
+                left++;
+                //remove duplicates
+                while(left < right && nums[left] == nums[left-1] ) 
+                    left++;
+
+            } 
+            else if(sum < target) left++;
+            else right--;
+        }
+        return ans;  
+    }
+}

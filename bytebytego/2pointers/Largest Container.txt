@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+
+//TC O(N)
+//sc O(1)
+public class Main {
+    public int largest_container(ArrayList<Integer> heights) {
+        int max_area = 0 , left = 0 , right = heights.size() - 1;
+
+        while(left < right) {
+            int water = Math.min(heights.get(left) , heights.get(right)) * (right-left);
+            max_area = Math.max(water,max_area);
+            if(heights.get(left) < heights.get(right)) left++;
+            else if(heights.get(right) < heights.get(left)) right--;
+            else {
+                left++;
+                right--;
+            }
+        }
+
+        return mmax_area;
+    }
+}

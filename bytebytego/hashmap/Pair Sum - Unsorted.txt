@@ -1,0 +1,25 @@
+import java.util.ArrayList;
+import java.util.*;
+
+public class Main {
+    //TC O(N)
+    //SC O(N)
+    public ArrayList<Integer> pair_sum_unsorted(ArrayList<Integer> nums, int target) {
+        // Write your code here
+        ArrayList<Integer> ans = new ArrayList();
+        HashMap<Integer,Integer> map = new HashMap();
+
+        for(int i=0;i<nums.size();i++){
+            int value = nums.get(i);
+            int diff = target - value;
+            if(map.containsKey(diff)) {
+                ans.add(map.get(diff));
+                ans.add(i);
+                return ans;
+            }
+            map.put(value,i);
+        }
+
+        return ans;
+    }
+}

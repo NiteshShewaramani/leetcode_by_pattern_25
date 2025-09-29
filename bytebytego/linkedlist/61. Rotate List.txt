@@ -1,0 +1,53 @@
+
+class Solution {
+
+    private int length(ListNode head)
+    {
+        ListNode current = head;
+        int c=0;
+        while(current!=null)
+        {
+            ++c;
+            current=current.next;
+        }
+        return c;
+    }
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head==null)
+            return head;
+
+        int l = length(head);
+        int noOfRotation = k%l;
+
+        if(noOfRotation==0)
+            return head;
+        else
+        {
+            //first make sure the last element points to head
+            ListNode current = head;
+            while(current.next!=null)
+            {
+                current=current.next;
+            }
+            //pointing tail to head made a circular list
+            current.next=head;
+            //find the element
+            //if we need to do 3 rotation in a list of 5 elements then the "2nd" element will become last 
+            int newTailElement = l -  noOfRotation;
+            ListNode newTail = head;
+            while(newTailElement>1)
+            {
+                --newTailElement;
+                newTail=newTail.next;
+            }
+            ListNode newHead= newTail.next;
+            //break the circular part
+            newTail.next = null;
+            
+            head=newHead;
+            return head;
+        }
+
+        
+    }
+}

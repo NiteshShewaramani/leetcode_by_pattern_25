@@ -1,5 +1,5 @@
 public class Solution {
-//TC O(26*n) from a to z maximun number of unique characters is 26 only
+//TC O(26*n) from a to z maximum number of unique characters is 26 only
 //SC O(26) ~ O(1)
     public int longestSubstring(String s, int k) {
         char[] str = s.toCharArray();

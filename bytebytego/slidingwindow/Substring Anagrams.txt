@@ -1,0 +1,42 @@
+
+public class Main {
+    //TC O(N) SC O(1)
+    public Integer substring_anagrams(String s, String t) {
+        
+        int count = 0 ;
+        int[] freq1 = new int[26];
+        int[] freq2 = new int[26];
+        if(s.length() < t.length()) return 0;
+
+        for(char c : t.toCharArray()) {
+            freq1[c-97]++;
+        }
+        int left = 0 , right = 0 ;
+        for(;right<t.length()-1;right++) {
+            char c = s.charAt(right);
+            freq2[c-97]++;
+        }
+        
+
+        while(right<s.length())
+        {
+            char cAtRight = s.charAt(right);
+            freq2[cAtRight-97]++;
+            if(isEqual(freq1,freq2)) count++;
+            char cAtLeft = s.charAt(left);
+            freq2[cAtLeft-97]--;
+            right++;
+            left++;
+        }
+        return count;
+    }
+
+    public boolean isEqual(int[] freq1,int[] freq2)
+    {
+        for(int i=0;i<26;i++) {
+            if(freq1[i] != freq2[i]) return false;
+        }
+        return true;
+
+    }
+}

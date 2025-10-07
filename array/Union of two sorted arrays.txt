@@ -1,0 +1,60 @@
+class Solution {
+    public int[] unionArray(int[] nums1, int[] nums2) {
+        ArrayList<Integer> unionList = new ArrayList<Integer>();
+        int i=0,j=0;
+        int n = nums1.length,m = nums2.length;
+        while( i<n && j<m) 
+        {
+            if(nums1[i] == nums2[j])
+            {
+                if(unionList.size() == 0)
+                    unionList.add(nums1[i]);
+                else if(nums1[i] != unionList.get(unionList.size()-1))
+                    unionList.add(nums1[i]);
+                
+                i++;
+                j++;
+            }
+            else if(nums1[i] < nums2[j])
+            {
+                if(unionList.size() ==0)
+                    unionList.add(nums1[i]); 
+                else if(nums1[i] != unionList.get(unionList.size()-1))
+                    unionList.add(nums1[i]);
+                i++;
+            }
+            
+            else if(nums1[i] > nums2[j])
+            {
+                if(unionList.size() ==0)
+                    unionList.add(nums2[j]); 
+                else if( nums2[j] != unionList.get(unionList.size()-1))
+                    unionList.add(nums2[j]);
+                j++;
+            }
+        }
+
+        while( i<n)
+        {
+            if(nums1[i] != unionList.get(unionList.size()-1))
+            unionList.add(nums1[i]);
+                i++;
+
+        }
+
+        while( j<m)
+        {
+            if( nums2[j] != unionList.get(unionList.size()-1))
+            unionList.add(nums2[j]);
+            j++;
+        }
+        int size = unionList.size();
+        int unionArray[] = new int[size];
+
+        for(int k= 0 ;k<size;k++)
+        {
+            unionArray[k] = unionList.get(k);
+        }
+        return unionArray;
+    }
+}

@@ -1,0 +1,32 @@
+class Solution {
+    public void rotateArray(int[] nums, int k) {
+        int length = nums.length;
+        k = k % length;
+
+        if(k!=0) 
+        {
+            //reverse entire array
+            reverse(nums,0,nums.length-1);
+            //reverse first half
+            reverse(nums,0,(nums.length - k) - 1);
+            //reverse second half
+            reverse(nums,(nums.length - k) , nums.length-1);
+        }
+    }
+
+    private void reverse(int nums[],int start, int end) 
+    {
+        while(start<end) 
+        {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+
+    }
+}
+
+//TC O(N) + O(N) traversing the array twice
+//SC O(1)

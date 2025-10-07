@@ -1,0 +1,25 @@
+/**
+Time Complexity: O(N), for single traversal of the array, where N is the size of the array.
+
+Space Complexity: O(1), not using any extra space.
+**/
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        // Initialize pointer for unique elements
+        int i=0;
+        int j = 1;
+        while(j < nums.length) 
+        {
+            if(nums[i] == nums[j])
+            j++;
+            else
+            {
+                ++i;
+                nums[i] = nums[j];
+                ++j;
+            }
+        }
+        // Return the number of unique elements
+        return i+1;
+    }
+}

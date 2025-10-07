@@ -1,0 +1,21 @@
+class Solution {
+//TC O(N + N) extra loop for stack as well
+//SC O(N) stack size 
+    @SuppressWarnings("unchecked")
+    public List<Integer> leaders(int[] nums) {
+        Stack<Integer> greaterElementList = new Stack<Integer>();
+        int length = nums.length;
+        greaterElementList.push(nums[length-1]);
+
+        for(int i = length-2;i>=0 ; i--)
+        {
+            if(nums[i]>greaterElementList.peek())
+                greaterElementList.push(nums[i]);
+        }
+        List<Integer> ans = new ArrayList();
+        while(!greaterElementList.isEmpty())
+            ans.add(greaterElementList.pop());
+
+        return ans;
+    }
+}

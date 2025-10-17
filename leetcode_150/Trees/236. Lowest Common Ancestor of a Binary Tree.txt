@@ -1,0 +1,19 @@
+class Solution {
+    //here lowest common means the node which is nearset to both
+    //p and q
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        //found p or q or went for the last node
+        if(root == null || p == root || q == root)
+        return root;
+        // search p and q from left and right
+        TreeNode left = lowestCommonAncestor(root.left,p,q);
+        TreeNode right = lowestCommonAncestor(root.right,p,q);
+        //if both left and right is not equal to null then root is the 
+        //common node
+        if(left!=null && right!=null)
+        return root;
+        // left is not null means from left's left & right we found both q and q
+        // so left is the LCA, otherwise, right is the answer
+        return (left==null)?right:left;
+    }  
+}

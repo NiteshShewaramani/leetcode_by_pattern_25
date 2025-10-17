@@ -1,0 +1,32 @@
+class Solution {
+    boolean ans=false;
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root!=null)
+            dfs(root,targetSum);
+        return ans;
+    }
+    public void dfs(TreeNode node,int targetsum)
+    {
+        if(node.left==null && node.right==null)
+        {
+            if(targetsum - node.val == 0)
+            {
+                ans = true;
+                return;
+            }
+
+        }
+        else
+        {
+            if(node.left!=null)
+            {
+                dfs(node.left , targetsum - node.val);
+            }
+            if(node.right!=null)
+            {
+                dfs(node.right,targetsum - node.val);
+            }
+
+        }
+    }
+}

@@ -1,0 +1,35 @@
+
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        HashMap<Integer,Integer> inMap=new HashMap<>();
+        TreeNode root = null;
+        
+            for(int i=0;i<inorder.length;i++)
+            {
+                inMap.put(inorder[i],i);
+            }
+            root=constructTree(0,preorder.length-1,preorder,inMap,0,inorder.length-1);           
+        return root;       
+    }
+    
+    public TreeNode constructTree(int prestart,int preend,int[] preorder,
+    HashMap<Integer,Integer> inMap,int instart , int inend)
+    {
+
+        if(prestart>preend || instart>inend)
+        return null;
+
+        TreeNode root = new TreeNode(preorder[prestart]);
+        int rootIndex = inMap.get(root.val);
+        int leftIndex = rootIndex-instart; //left sub tree
+        //inorder will be from 0 till left of root(left sub tree)
+        //preorder will be +1 from the root till the no of elements on the left side
+        root.left=constructTree(prestart+1           ,prestart+leftIndex ,preorder,inMap, instart , rootIndex-1 );
+        //if leeftIndex is 1 that means there will be 2 elements in left subtree so start the right from
+        //leaving 2 indes
+        root.right=constructTree(prestart+1+leftIndex,preend             ,preorder,inMap, rootIndex+1 , inend);
+        
+        return root;
+
+    }
+}

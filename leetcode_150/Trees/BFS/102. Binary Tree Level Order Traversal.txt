@@ -1,0 +1,28 @@
+class Solution {
+     List<List<Integer>> ans = new ArrayList<>();
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        
+        if(root==null)
+        return ans;
+        dfs(root,0);
+        return ans;
+    }
+    private void dfs(TreeNode node,int level)
+    {
+        if(node==null)
+        return;
+
+        if(ans.size()==level)
+        {
+            //the first time we find an element in the level we create a 
+            //new list 
+            ans.add(new ArrayList<>());
+        }
+        //we add the elemnt on its level
+        ans.get(level).add(node.val);
+
+        dfs(node.left,level+1);
+        dfs(node.right,level+1);
+
+    }
+}

@@ -1,0 +1,55 @@
+
+Time Complexity: O(N*M) (where N and M are the dimensions of the grid)
+
+Running a nested loop to traverse every cell of grid takes O(N*M) time.
+In total, the traversal will be performed on grids taking overall at most of O(9*N*M) time.
+Space Complexity: O(N*M)
+
+Because of the visited array, it takes up O(N*M) space .
+
+class Solution {
+    int rows;
+    int cols;
+    char[][] gridGlobal; 
+    public int numIslands(char[][] grid) {
+        gridGlobal = grid;
+        rows = gridGlobal.length;
+        cols = gridGlobal[0].length;
+        int count = 0;
+        for(int i=0 ; i < rows ; i++)
+        {
+            for(int j=0 ; j< cols ; j++)
+            {
+                if(gridGlobal[i][j] == '1')
+                {
+                    dfs(i,j);
+                    ++count;
+                }
+            }
+
+        }
+        return count;
+        
+    }
+
+    private void dfs(int i, int j)
+    {
+        if(i<0 || j<0) 
+            return;
+        if(i>= rows || j>= cols)
+            return;
+        //previous;y visited
+        if(gridGlobal[i][j] == '0')
+            return;    
+
+        //mark as visited
+        gridGlobal[i][j] = '0';
+
+        //check all 4  directions 
+        //this will cover everything
+        dfs(i+1, j);
+        dfs(i,j+1);
+        dfs(i-1, j);
+        dfs(i, j-1);
+    }
+}

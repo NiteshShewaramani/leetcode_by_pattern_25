@@ -1,0 +1,60 @@
+class Solution {
+ /**
+    Time Complexity: O(V+E) (where V and E represent the number of nodes and edges in the graph)
+    A simple DFS traversal takes O(V+E) time.
+    Space Complexity: O(V)
+    The visited array and Path Visited array take O(V) space each and the recursion stack space during DFS traversal will be O(V).
+
+This is cycle detection
+    */
+
+    public boolean dfs(List<List<Integer>> adjList,int visited[],
+    int pathVisited[],int node)
+    {
+        visited[node]=1;
+        pathVisited[node]=1;
+        for(int n : adjList.get(node))
+        {
+            if(visited[n] == 0)
+            {
+                boolean result = dfs(adjList,visited,pathVisited,n);
+                if(!result)
+                return result;
+            }
+            else if(pathVisited[n] == 1)
+            {
+                return false;
+            }
+
+        }
+        pathVisited[node]=0;
+        return true;
+
+    }
+    
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adjList=new ArrayList<>();
+
+        for(int i=0;i<numCourses;i++)
+        adjList.add(new ArrayList<>());
+        
+        for(int i=0;i<prerequisites.length;i++)
+        {
+            int first = prerequisites[i][0];
+            int second = prerequisites[i][1];
+            adjList.get(first).add(second);
+        }
+        int visited[] = new int[numCourses];
+        int pathVisited[] = new int[numCourses];
+
+        for(int cou=0;cou<numCourses;cou++)
+        {
+            boolean result = dfs(adjList,visited,pathVisited,cou);
+            if(!result)
+                return result;
+        }
+
+        return true;
+        
+    }
+}
